@@ -1,9 +1,9 @@
-from config import gpt_token
+from config import GPT_TOKEN
 from openai import OpenAI
 
 
 def gpt_ask_func(req_mess):
-    client = OpenAI(api_key=gpt_token)
+    client = OpenAI(api_key=GPT_TOKEN)
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
