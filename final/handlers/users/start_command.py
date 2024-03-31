@@ -10,7 +10,7 @@ from database.sessia_db import create_new_sessia
 from database.users_db import add_new_user
 from gpt_func import gpt_ask_func
 from keyboards.keyboards import start_markup, return_markup
-from ... import bot, dp
+from loader import bot, dp
 
 
 class UserState(StatesGroup):
