@@ -1,5 +1,5 @@
-import buttons
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from constants import buttons
+from aiogram.types import InlineKeyboardMarkup
 
 
 def feedback_markup():
