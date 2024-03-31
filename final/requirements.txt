@@ -1,0 +1,4 @@
+asyncio~=3.4.*
+aiogram~=3.4.*
+logging~=0.4.9.*
+db-sqlite3==0.0.1
