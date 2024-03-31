@@ -1,5 +1,6 @@
-from config import GPT_TOKEN
 from openai import OpenAI
+
+from config import GPT_TOKEN
 
 
 def gpt_ask_func(req_mess):

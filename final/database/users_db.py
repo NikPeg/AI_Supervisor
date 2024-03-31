@@ -1,6 +1,6 @@
 import datetime
 
-from loader import database, cursor
+from . import database, cursor
 from .feedback_db import add_in_feedback_users
 
 
