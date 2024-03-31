@@ -2,7 +2,7 @@ import asyncio
 
 from aiogram import types
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from loader import dp, bot
+from ... import dp, bot
 
 from config import ADMIN_ID
 from constants import buttons, messages
