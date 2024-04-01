@@ -1,14 +1,14 @@
 import datetime
 
-from loader import database, cursor
+from . import database, cursor
 from .feedback_db import add_in_feedback_users
 
 
-def add_new_user(user_id, user_nick):
+def add_new_user(user_id, user_nik):
     check_ = check_user_status(user_id)
     if not check_:
         date = datetime.datetime.now()
-        cursor.execute("INSERT INTO User VALUES(?,?,?)", (user_id, f"@{user_nick}", date,))
+        cursor.execute("INSERT INTO User VALUES(?,?,?)", (user_id, f"@{user_nik}", date,))
         database.commit()
         add_in_feedback_users(user_id)
 

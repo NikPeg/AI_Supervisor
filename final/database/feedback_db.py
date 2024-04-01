@@ -1,6 +1,6 @@
 import datetime
 
-from loader import database, cursor
+from . import *
 
 
 def add_in_feedback_users(user_id):

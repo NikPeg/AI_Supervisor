@@ -8,6 +8,3 @@ import config
 bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
-
-database = sqlite3.connect("bot.sqlite")
-cursor = database.cursor()

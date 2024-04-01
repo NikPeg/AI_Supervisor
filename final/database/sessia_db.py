@@ -1,6 +1,6 @@
 import datetime
 
-from loader import database, cursor
+from . import database, cursor
 
 
 def get_user_session_id(user_id):
