@@ -11,8 +11,9 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def on_startup(dispatcher):
-    await set_default_commands(dispatcher)
-    asyncio.run(start_feed_back())
+    task1 = set_default_commands(dispatcher)
+    task = asyncio.create_task(start_feed_back())
+    await asyncio.gather(task1, task)
 
 
 if __name__ == '__main__':
