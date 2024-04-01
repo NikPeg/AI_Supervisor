@@ -9,7 +9,7 @@ from database.feedback_db import add_new_feedback
 from database.feedback_db import delete_user_from_feedback, get_all_feed_back_users
 from keyboards.keyboards import feedback_markup
 from .start_command import UserState
-from loader import bot, dp
+from ... import bot, dp
 
 
 @dp.callback_query_handler(text='give_feedback', state="*")
