@@ -12,7 +12,7 @@ from loader import dp, bot
 from messages import HELP, START, PROMPT, NEW_PROMPT
 
 
-class User_(StatesGroup):
+class UserState(StatesGroup):
     gpt_req = State()
     feedback = State()
 
@@ -25,7 +25,7 @@ async def start_command_handler(message: types.Message):
     await bot.send_message(message.chat.id, PROMPT)
     await bot.send_message(admin_id,
                            f"Пользователь {message.chat.id} c ником {message.chat.username} нажал кнопку /start.")
-    await User_.gpt_req.set()
+    await UserState.gpt_req.set()
 
 
 @dp.callback_query_handler(text='info', state="*")
@@ -56,10 +56,10 @@ async def help_message_handler(message: types.Message):
     create_new_sessia(message.chat.id)
     await bot.send_message(admin_id,
                            f"Пользователь {message.chat.id} c ником {message.chat.username} нажал кнопку /new.")
-    await User_.gpt_req.set()
+    await UserState.gpt_req.set()
 
 
-@dp.message_handler(state=User_.gpt_req)
+@dp.message_handler(state=UserState.gpt_req)
 async def user_gpt_req_handler(message: types.Message):
     req_text = message.text
     await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, req_text))

@@ -8,16 +8,16 @@ from database.feedback_db import add_new_feedback
 from database.feedback_db import delete_user_from_feedback, get_all_feed_back_users
 from keyboards.keyboards import feedback_markup
 from loader import bot, dp
-from .start_command import User_
+from .start_command import UserState
 
 
 @dp.callback_query_handler(text='give_feedback', state="*")
 async def get_feedback_handler(call: types.CallbackQuery):
     await call.message.edit_text('Введите Ваш отзыв:')
-    await User_.feedback.set()
+    await UserState.feedback.set()
 
 
-@dp.message_handler(state=User_.feedback)
+@dp.message_handler(state=UserState.feedback)
 async def feedback_handler(message: types.Message, state: FSMContext):
     await state.finish()
     add_new_feedback(message.chat.id, message.text)
