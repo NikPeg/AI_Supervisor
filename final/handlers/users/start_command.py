@@ -3,7 +3,7 @@ import asyncio
 from loader import dp,bot
 from aiogram import types
 from keyboards.keyboards import start_markup,return_markup
-from messages import fr_mess,start_mess,start_mess_2,help_mess,help_mess_2,new_mess
+from messages import fr_mess,start_mess,start_mess_2,new_mess
 from aiogram.dispatcher.filters.state import State,StatesGroup
 from database.sessia_db import create_new_sessia
 from database.mess_db import add_new_message
