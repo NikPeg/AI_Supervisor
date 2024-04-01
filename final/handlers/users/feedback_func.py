@@ -37,4 +37,5 @@ async def start_feed_back():
             await asyncio.sleep(0.2)
         except:
             continue
-    await asyncio.sleep(8640)
+    # await asyncio.sleep(8640)
+    await asyncio.sleep(30)
