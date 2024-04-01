@@ -9,7 +9,7 @@ from database.mess_db import add_new_message
 from database.sessia_db import create_new_session
 from database.users_db import add_new_user
 from keyboards.keyboards import start_markup, return_markup
-from loader import dp, bot
+from ai_main import dp, bot
 from messages import HELP, START, PROMPT, NEW_PROMPT
 
 
