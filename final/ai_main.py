@@ -1,10 +1,9 @@
-import asyncio
 import logging
 
 from aiogram import executor
-import messages
+
 import config
-from handlers.users.feedback_func import start_feed_back
+import messages
 from loader import bot, dp
 from utils.bot_start_func.set_bot_commands import set_default_commands
 
