@@ -1,5 +1,5 @@
 import openai
-from d import retry, stop_after_attempt, wait_fixed
+from tenacity import retry, stop_after_attempt, wait_fixed
 
 
 class GPTProxy:
