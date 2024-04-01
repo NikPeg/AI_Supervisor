@@ -5,7 +5,7 @@ from loader import database, cursor
 
 def add_in_feedback_users(user_id):
     check_ = check_user_in_feedback(user_id)
-    if check_ == False:
+    if not check_:
         cursor.execute("INSERT INTO FeedUsers VALUES(?)", (user_id,))
         database.commit()
 
