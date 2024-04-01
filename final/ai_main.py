@@ -1,19 +1,14 @@
+import asyncio
 import logging
 
 from aiogram import executor
-
 import messages
+import config
+from handlers.users.feedback_func import start_feed_back
+from loader import bot, dp
 from utils.bot_start_func.set_bot_commands import set_default_commands
 
 logging.basicConfig(level=logging.INFO)
-
-from aiogram import Bot, Dispatcher, types
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-
-import config
-
-bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
-dp = Dispatcher(bot, storage=MemoryStorage())
 
 
 async def on_startup(dispatcher):
