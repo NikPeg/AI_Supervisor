@@ -5,4 +5,3 @@ asyncio~=3.4.3
 aiogram==2.23.1
 logging~=0.4.9.6
 db-sqlite3==0.0.1
-openai==1.14.3
