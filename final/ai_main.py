@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 
 async def on_startup(dispatcher):
     await set_default_commands(dispatcher)
-    asyncio.create_task(start_feed_back())
+    # asyncio.create_task(start_feed_back())
 
 
 if __name__ == '__main__':
