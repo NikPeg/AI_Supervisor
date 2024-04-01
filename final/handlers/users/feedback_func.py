@@ -3,28 +3,27 @@ import asyncio
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from config import ADMIN_ID
+from config import admin_id
 from database.feedback_db import add_new_feedback
 from database.feedback_db import delete_user_from_feedback, get_all_feed_back_users
 from keyboards.keyboards import feedback_markup
 from loader import bot, dp
-from .start_command import UserState
-from messages import *
+from .start_command import User_
 
 
 @dp.callback_query_handler(text='give_feedback', state="*")
 async def get_feedback_handler(call: types.CallbackQuery):
-    await call.message.edit_text(FEEDBACK_PROMPT)
-    await UserState.feedback.set()
+    await call.message.edit_text('Введите Ваш отзыв:')
+    await User_.feedback.set()
 
 
-@dp.message_handler(state=UserState.feedback)
+@dp.message_handler(state=User_.feedback)
 async def feedback_handler(message: types.Message, state: FSMContext):
     await state.finish()
     add_new_feedback(message.chat.id, message.text)
     await bot.send_message(
-        ADMIN_ID,
-        NEW_FEEDBACK.format(message.chat.id, message.chat.username, message.text),
+        admin_id,
+        f"Пользователь {message.chat.id} c ником @{message.chat.username} прислал фидбек {message.text}",
     )
 
 
@@ -34,7 +33,9 @@ async def start_feed_back():
         try:
             await bot.send_message(
                 user[0],
-                text=FEEDBACK,
+                text='🥺Нам очень важна Ваша обратная связь, чтобы становиться лучше!'
+                     'Пожалуйста, напиши отзыв о боте в свободной форме.'
+                     'Что нравится в боте? Что стоит исправить? Какие еще функции Вы бы хотели видеть в боте?',
                 reply_markup=feedback_markup(),
             )
             delete_user_from_feedback(user[0])

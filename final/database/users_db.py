@@ -5,7 +5,8 @@ from .feedback_db import add_in_feedback_users
 
 
 def add_new_user(user_id, user_nick):
-    if not check_user_status(user_id):
+    check_ = check_user_status(user_id)
+    if check_ == False:
         date = datetime.datetime.now()
         cursor.execute("INSERT INTO Users VALUES(?,?,?)", (user_id, f"@{user_nick}", date,))
         database.commit()
@@ -14,6 +15,7 @@ def add_new_user(user_id, user_nick):
 
 def check_user_status(user_id):
     cursor.execute("SELECT user_id FROM Users WHERE user_id=?", (user_id,))
-    if cursor.fetchone() is None:
+    user_ = cursor.fetchone()
+    if user_ is None:
         return False
     return True

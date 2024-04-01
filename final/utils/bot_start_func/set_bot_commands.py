@@ -1,8 +1,9 @@
-import commands
+from aiogram import types
+
 
 async def set_default_commands(dp):
     await dp.bot.set_my_commands([
-        commands.START,
-        commands.HELP,
-        commands.NEW_CASE,
+        types.BotCommand("start", "Запустить бота"),
+        types.BotCommand("help", "Помощь"),
+        types.BotCommand("new", "Начать новый кейс"),
     ])
