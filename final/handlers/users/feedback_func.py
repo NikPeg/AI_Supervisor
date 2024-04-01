@@ -8,7 +8,7 @@ from config import ADMIN_ID
 from database.feedback_db import add_new_feedback
 from database.feedback_db import delete_user_from_feedback, get_all_feed_back_users
 from keyboards.keyboards import feedback_markup
-from loader import bot, dp
+from ai_main import bot, dp
 from .start_command import UserState
 
 
