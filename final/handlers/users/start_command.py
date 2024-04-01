@@ -6,7 +6,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 import messages
 from config import ADMIN_ID
 from database.mess_db import add_new_message
-from database.sessia_db import create_new_sessia
+from database.sessia_db import create_new_session
 from database.users_db import add_new_user
 from keyboards.keyboards import start_markup, return_markup
 from loader import dp, bot
@@ -22,7 +22,7 @@ class UserState(StatesGroup):
 async def start_command_handler(message: types.Message):
     add_new_user(message.chat.id, message.chat.username)
     await bot.send_message(message.chat.id, START, reply_markup=start_markup())
-    create_new_sessia(message.chat.id)
+    create_new_session(message.chat.id)
     await bot.send_message(message.chat.id, PROMPT)
     await bot.send_message(
         ADMIN_ID,
@@ -62,7 +62,7 @@ async def help_message_handler(message: types.Message):
 @dp.message_handler(commands=['new'], state="*")
 async def help_message_handler(message: types.Message):
     await bot.send_message(message.chat.id, NEW_PROMPT)
-    create_new_sessia(message.chat.id)
+    create_new_session(message.chat.id)
     await bot.send_message(
         ADMIN_ID,
         messages.BUTTON_PRESSED.format(message.chat.id, message.chat.username, message.text),
