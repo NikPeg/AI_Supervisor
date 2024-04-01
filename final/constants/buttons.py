@@ -1,9 +1,0 @@
-from aiogram.types import InlineKeyboardButton
-
-import config
-
-FEEDBACK = InlineKeyboardButton(text="👌Оставить отзыв", callback_data='give_feedback')
-
-ABOUT = InlineKeyboardButton(text="ℹ️Узнать о frAId", callback_data='info')
-SOS = InlineKeyboardButton(text='🆘Поддержка', url=config.SOS_URL)
-BACK = InlineKeyboardButton(text='👈Назад', callback_data='return')

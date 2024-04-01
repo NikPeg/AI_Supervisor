@@ -2,15 +2,16 @@ import asyncio
 
 from aiogram import types
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from loader import dp, bot
 
+import messages
 from config import ADMIN_ID
-from constants import buttons, messages
 from database.mess_db import add_new_message
 from database.sessia_db import create_new_sessia
 from database.users_db import add_new_user
-from gpt_func import gpt_ask_func
 from keyboards.keyboards import start_markup, return_markup
+from loader import dp, bot
+import buttons
+from gpt_func import gpt_ask_func
 
 
 class UserState(StatesGroup):
