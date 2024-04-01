@@ -3,7 +3,7 @@ import asyncio
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from config import admin_id
+from config import ADMIN_ID
 from database.feedback_db import add_new_feedback
 from database.feedback_db import delete_user_from_feedback, get_all_feed_back_users
 from keyboards.keyboards import feedback_markup
@@ -21,7 +21,7 @@ async def get_feedback_handler(call: types.CallbackQuery):
 async def feedback_handler(message: types.Message, state: FSMContext):
     await state.finish()
     add_new_feedback(message.chat.id, message.text)
-    await bot.send_message(admin_id,
+    await bot.send_message(ADMIN_ID,
                            f"Пользователь {message.chat.id} c ником @{message.chat.username} прислал фидбек {message.text}")
 
 
