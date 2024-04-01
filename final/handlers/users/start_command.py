@@ -9,7 +9,7 @@ from database.mess_db import add_new_message
 from database.sessia_db import create_new_session
 from database.users_db import add_new_user
 from keyboards.keyboards import start_markup, return_markup
-from loader import dp, bot
+from loader import dp, bot, gpt
 from messages import HELP, START, PROMPT, NEW_PROMPT
 
 
@@ -77,8 +77,7 @@ async def user_gpt_req_handler(message: types.Message):
 
 
 async def create_user_req(user_id, user_name, req_text):
-    from gpt_func import gpt_ask_func
-    bot_req = gpt_ask_func(req_text)
+    bot_req = gpt.ask(req_text)
     add_new_message(user_id, req_text, bot_req)
     await bot.send_message(user_id, bot_req)
     await bot.send_message(
