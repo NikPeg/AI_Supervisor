@@ -32,7 +32,7 @@ class GPTProxy:
         print("ASKING")
         print([
             {"role": "system", "content": KPT_PROMPT},
-            *[asdict(message) for message in context],
+            *[message.as_dict() for message in context],
             {"role": "user", "content": f"Ответь на запрос психолога: {request}"}
         ])
         try:
