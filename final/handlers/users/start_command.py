@@ -1,7 +1,7 @@
 import asyncio
 
 from aiogram import types
-from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.dispatcher.filters.state import State, StatesGroup, default_state
 
 import buttons
 import messages
@@ -72,6 +72,13 @@ async def help_message_handler(message: types.Message):
 
 @dp.message_handler(state=UserState.gpt_request)
 async def user_gpt_req_handler(message: types.Message):
+    request_text = message.text
+    await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
+
+
+@dp.message_handler(state=default_state)
+async def user_gpt_req_handler(message: types.Message):
+    print("default_state")
     request_text = message.text
     await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
 
