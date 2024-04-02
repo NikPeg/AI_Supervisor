@@ -85,5 +85,5 @@ async def create_user_req(user_id, user_name, request_text):
     await bot.send_message(
         ADMIN_ID,
         messages.MESSAGE_SENT.format(user_id, user_name, request_text, bot_answer),
-        parse_mode="MarkdownV2",
+        parse_mode="Markdown",
     )
