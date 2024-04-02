@@ -1,4 +1,4 @@
-import dataclasses
+from dataclasses import dataclass, asdict
 import enum
 import openai
 from tenacity import retry, stop_after_attempt, wait_fixed
@@ -11,7 +11,7 @@ class Role(str, enum.Enum):
     ASSISTANT = "assistant"
 
 
-@dataclasses.dataclass
+@dataclass
 class MessageDTO:
     role: Role
     content: str
@@ -31,7 +31,7 @@ class GPTProxy:
                 model=self.model,
                 messages=[
                     {"role": "system", "content": KPT_PROMPT},
-                    *[message.as_dict() for message in context],
+                    *[asdict(message) for message in context],
                     {"role": "user", "content": f"Ответь на запрос психолога: {request}"}
                 ]
             )
