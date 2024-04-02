@@ -5,7 +5,7 @@ from tenacity import retry, stop_after_attempt, wait_fixed
 from prompts import KPT_PROMPT
 
 
-class Role(str, enum.Enum):
+class Role(enum.Enum):
     SYSTEM = "system"
     USER = "user"
     ASSISTANT = "assistant"
@@ -15,6 +15,9 @@ class Role(str, enum.Enum):
 class MessageDTO:
     role: Role
     content: str
+
+    def as_dict(self):
+        return {"role": self.role.value, "content": self.content}
 
 
 class GPTProxy:
