@@ -30,7 +30,7 @@ async def feedback_handler(message: types.Message, state: FSMContext):
     delete_user_from_feedback(message.chat.id)
 
 
-FEEDBACK_PERIOD = 30 * 60
+FEEDBACK_PERIOD = 60 * 60
 
 
 async def start_feed_back():
