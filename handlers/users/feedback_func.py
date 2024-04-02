@@ -29,14 +29,17 @@ async def feedback_handler(message: types.Message, state: FSMContext):
 
 
 async def start_feed_back():
-    all_users = get_all_feed_back_users()
-    for user in all_users:
-        try:
-            await bot.send_message(user[0], text=messages.FEEDBACK_ASK, reply_markup=feedback_markup())
-            delete_user_from_feedback(user[0])
-            await asyncio.sleep(0.2)
-        except Exception as e:
-            await bot.send_message(ADMIN_ID, text=e)
-            continue
-    # await asyncio.sleep(8640)
-    await asyncio.sleep(30)
+    print("start_feed_back")
+    while True:
+        all_users = get_all_feed_back_users()
+        print("all_users", all_users)
+        for user in all_users:
+            try:
+                await bot.send_message(user[0], text=messages.FEEDBACK_ASK, reply_markup=feedback_markup())
+                delete_user_from_feedback(user[0])
+                await asyncio.sleep(0.2)
+            except Exception as e:
+                await bot.send_message(ADMIN_ID, text=e)
+                continue
+        # await asyncio.sleep(8640)
+        await asyncio.sleep(5)
