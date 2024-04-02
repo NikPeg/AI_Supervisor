@@ -1,6 +1,5 @@
 import datetime
 
-import config
 from gpt_proxy import MessageDTO, Role
 from . import database, cursor
 from .session_db import get_user_session_id
@@ -14,15 +13,11 @@ def add_new_message(user_id, user_req, bot_req):
 
 
 def get_conversation_by_user(user_id):
-    print("!!!get_conversation_by_user")
     session_id = get_user_session_id(user_id)
     cursor.execute("SELECT * FROM Message WHERE session_id=?", (session_id,))
     res = cursor.fetchall()
-    print(f"SELECT * FROM Message WHERE session_id={session_id}")
-    print(res)
     conversation = []
     for message in res:
         conversation.append(MessageDTO(Role.USER, message[1]))
         conversation.append(MessageDTO(Role.ASSISTANT, message[2]))
     return conversation
-
