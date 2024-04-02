@@ -36,8 +36,7 @@ async def start_feed_back():
         for user in all_users:
             try:
                 await bot.send_message(user[0], text=messages.FEEDBACK_ASK, reply_markup=feedback_markup())
-                delete_user_from_feedback(user[0])
-                await asyncio.sleep(0.2)
+                # delete_user_from_feedback(user[0])
             except Exception as e:
                 await bot.send_message(ADMIN_ID, text=e)
                 continue

@@ -19,7 +19,7 @@ def check_user_in_feedback(user_id):
 
 
 def delete_user_from_feedback(user_id):
-    cursor.execute("DELETE FROM UserFeedbacks WHERE user_id=?", (user_id,))
+    cursor.execute("DELETE FROM UserFeedback WHERE user_id=?", (user_id,))
     database.commit()
 
 
