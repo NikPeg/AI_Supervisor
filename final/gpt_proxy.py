@@ -4,7 +4,7 @@ import openai
 from tenacity import retry, stop_after_attempt, wait_fixed
 
 
-class Role(enum.StrEnum):
+class Role(str, enum.Enum):
     SYSTEM = "system"
     USER = "user"
     ASSISTANT = "assistant"
