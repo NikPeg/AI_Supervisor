@@ -7,7 +7,7 @@ import buttons
 import messages
 from config import ADMIN_ID
 from database.message_db import add_new_message, get_conversation_by_user
-from database.session_db import create_new_session, get_user_session_id
+from database.session_db import create_new_session
 from database.user_db import add_new_user
 from keyboards.keyboards import start_markup, return_markup
 from loader import dp, bot, gpt
@@ -75,12 +75,6 @@ async def help_message_handler(message: types.Message):
 async def user_gpt_req_handler(message: types.Message):
     request_text = message.text
     await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
-
-
-# @dp.message_handler(state=default_state)
-# async def user_gpt_req_handler(message: types.Message):
-#     request_text = message.text
-#     await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
 
 
 async def create_user_req(user_id, user_name, request_text):
