@@ -9,7 +9,7 @@ def create_new_session(user_id):
 
 
 def get_user_session_id(user_id):
-    cursor.execute("SELECT id FROM Session WHERE user_id=?", (user_id,))
+    cursor.execute("SELECT id FROM Session WHERE user_id=? ORDER BY id DESC LIMIT 1", (user_id,))
     session_id = cursor.fetchone()
     if session_id is None:
         return create_new_session(user_id)
