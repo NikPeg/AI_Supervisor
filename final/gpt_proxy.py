@@ -1,5 +1,19 @@
+import dataclasses
+import enum
 import openai
 from tenacity import retry, stop_after_attempt, wait_fixed
+
+
+class Role(enum.StrEnum):
+    SYSTEM = "system"
+    USER = "user"
+    ASSISTANT = "assistant"
+
+
+@dataclasses.dataclass
+class Message:
+    role: Role
+    content: str
 
 
 class GPTProxy:
