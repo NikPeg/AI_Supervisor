@@ -1,7 +1,7 @@
 import openai
 from tenacity import retry, stop_after_attempt, wait_fixed
 
-import prompts
+from . import prompts
 from models import *
 
 
@@ -18,7 +18,7 @@ class GPTProxy:
             completion = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    MessageDTO(Role.SYSTEM, prompts.KPT_PROMPT).as_dict(),
+                    MessageDTO(Role.SYSTEM, prompts.KPT).as_dict(),
                     *[message.as_dict() for message in context],
                     MessageDTO.from_user(request).as_dict(),
                 ]
