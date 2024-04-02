@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from aiogram import executor
@@ -13,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 async def on_startup(dispatcher):
     await bot.send_message(config.ADMIN_ID, messages.BOT_STARTED)
     await set_default_commands(dispatcher)
-    # asyncio.create_task(start_feed_back())
+    asyncio.create_task(start_feed_back())
 
 
 if __name__ == '__main__':
