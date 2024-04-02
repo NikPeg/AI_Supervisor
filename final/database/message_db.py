@@ -14,6 +14,7 @@ def add_new_message(user_id, user_req, bot_req):
 
 
 def get_conversation_by_user(user_id):
+    print("get_conversation_by_user")
     session_id = get_user_session_id(user_id)
     res = cursor.execute("SELECT * FROM Message WHERE user_id=? AND session_id=?", (user_id, session_id,))
     bot.send_message(config.ADMIN_ID, f"SELECT * FROM Message WHERE user_id={user_id} AND session_id={session_id}")
