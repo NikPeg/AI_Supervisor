@@ -16,6 +16,6 @@ def get_conversation_by_user(user_id):
     print("!!!get_conversation_by_user")
     session_id = get_user_session_id(user_id)
     cursor.execute("SELECT * FROM Message WHERE user_id=? AND session_id=?", (user_id, session_id,))
-    res = cursor.fetchone()
+    res = cursor.fetchall()
     print(f"SELECT * FROM Message WHERE user_id={user_id} AND session_id={session_id}")
-    print(config.ADMIN_ID, res)
+    print(res)
