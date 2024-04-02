@@ -10,10 +10,7 @@ def create_new_session(user_id):
 
 def get_user_session_id(user_id):
     cursor.execute("SELECT id FROM Session WHERE user_id=? ORDER BY id DESC LIMIT 1", (user_id,))
-    print("get_user_session_id")
-    print(f"SELECT id FROM Session WHERE user_id={user_id} ORDER BY id DESC LIMIT 1")
     session_id = cursor.fetchone()
     if session_id is None:
-        print("session is None")
         return create_new_session(user_id)
     return int(session_id[0])

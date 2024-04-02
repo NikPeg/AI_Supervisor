@@ -1,8 +1,10 @@
-from dataclasses import dataclass, asdict
 import enum
+from dataclasses import dataclass
+
 import openai
 from tenacity import retry, stop_after_attempt, wait_fixed
-from prompts import KPT_PROMPT
+
+import prompts
 
 
 class Role(enum.Enum):
@@ -19,6 +21,13 @@ class MessageDTO:
     def as_dict(self):
         return {"role": self.role.value, "content": self.content}
 
+    @staticmethod
+    def from_user(request):
+        return MessageDTO(Role.USER, request)
+
+
+SYSTEM_MESSAGE = MessageDTO(Role.SYSTEM, prompts.KPT_PROMPT)
+
 
 class GPTProxy:
     def __init__(self, token, model="gpt-3.5-turbo"):
@@ -29,23 +38,16 @@ class GPTProxy:
     def ask(self, request, context=None):
         if context is None:
             context = []
-        print("ASKING")
-        print([
-            {"role": "system", "content": KPT_PROMPT},
-            *[message.as_dict() for message in context],
-            {"role": "user", "content": f"Ответь на запрос психолога: {request}"}
-        ])
         try:
             completion = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": KPT_PROMPT},
+                    SYSTEM_MESSAGE.as_dict(),
                     *[message.as_dict() for message in context],
-                    {"role": "user", "content": f"Ответь на запрос психолога: {request}"}
+                    MessageDTO.from_user(request).as_dict(),
                 ]
             )
 
             return completion.choices[0].message.content
         except Exception as e:
-            print(e)
             raise e
