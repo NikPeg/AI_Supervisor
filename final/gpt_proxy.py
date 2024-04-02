@@ -2,6 +2,7 @@ import dataclasses
 import enum
 import openai
 from tenacity import retry, stop_after_attempt, wait_fixed
+from prompts import KPT_PROMPT
 
 
 class Role(str, enum.Enum):
@@ -11,7 +12,7 @@ class Role(str, enum.Enum):
 
 
 @dataclasses.dataclass
-class Message:
+class MessageDTO:
     role: Role
     content: str
 
@@ -22,12 +23,15 @@ class GPTProxy:
         self.model = model
 
     @retry(wait=wait_fixed(21), stop=stop_after_attempt(5))
-    def ask(self, request):
+    def ask(self, request, context=None):
+        if context is None:
+            context = []
         try:
             completion = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": "Ты — эксперт-супервизор когнитивно-поведенческой психотерапии."},
+                    {"role": "system", "content": KPT_PROMPT},
+                    *[message.as_dict() for message in context],
                     {"role": "user", "content": f"Ответь на запрос психолога: {request}"}
                 ]
             )
