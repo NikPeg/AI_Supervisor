@@ -22,7 +22,6 @@ class UserState(StatesGroup):
 async def start_command_handler(message: types.Message):
     add_new_user(message.chat.id, message.chat.username)
     await bot.send_message(message.chat.id, START, reply_markup=start_markup())
-    create_new_session(message.chat.id)
     await bot.send_message(message.chat.id, PROMPT)
     await bot.send_message(
         ADMIN_ID,
