@@ -5,9 +5,9 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 import messages
 from config import ADMIN_ID
-from database.mess_db import add_new_message, get_conversation_by_user
+from database.message_db import add_new_message, get_conversation_by_user
 from database.session_db import create_new_session, get_user_session_id
-from database.users_db import add_new_user
+from database.user_db import add_new_user
 from keyboards.keyboards import start_markup, return_markup
 from loader import dp, bot, gpt
 from messages import HELP, START, PROMPT, NEW_PROMPT
