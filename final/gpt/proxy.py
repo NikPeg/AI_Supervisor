@@ -2,7 +2,7 @@ import openai
 from tenacity import retry, stop_after_attempt, wait_fixed
 
 from . import prompts
-from models import *
+from .models import *
 
 
 class GPTProxy:
