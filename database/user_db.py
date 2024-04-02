@@ -13,7 +13,7 @@ def add_new_user(user_id, username):
 
 
 def check_user_status(user_id):
-    cursor.execute("SELECT user_id FROM User WHERE user_id=?", (user_id,))
+    cursor.execute("SELECT id FROM User WHERE id=?", (user_id,))
     user_ = cursor.fetchone()
     if user_ is None:
         return False
