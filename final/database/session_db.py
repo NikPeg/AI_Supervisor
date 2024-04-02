@@ -1,19 +1,16 @@
-import datetime
-
 from . import database, cursor
+
+
+def create_new_session(user_id):
+    cursor.execute("INSERT INTO Session(user_id) VALUES(?)", (user_id,))
+    database.commit()
+    cursor.execute("SELECT id FROM Session WHERE user_id=?", (user_id,))
+    return int(cursor.fetchone()[0])
 
 
 def get_user_session_id(user_id):
     cursor.execute("SELECT id FROM Session WHERE user_id=?", (user_id,))
     session_id = cursor.fetchone()
     if session_id is None:
-        return int(0)
+        return create_new_session(user_id)
     return int(session_id[0])
-
-
-def create_new_session(user_id):
-    session_id = get_user_session_id(user_id)
-    session_id += int(1)
-    date = datetime.datetime.now()
-    cursor.execute("INSERT INTO Session VALUES(?,?,?)", (user_id, session_id, date,))
-    database.commit()
