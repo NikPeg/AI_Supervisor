@@ -5,10 +5,12 @@ from . import database, cursor
 from .session_db import get_user_session_id
 
 
-def add_new_message(user_id, user_req, bot_req):
+def add_new_message(user_id, user_request, bot_answer):
     session_id = get_user_session_id(user_id)
-    date = datetime.datetime.now()
-    cursor.execute("INSERT INTO Message VALUES(?,?,?,?,?)", (user_id, user_req, bot_req, session_id, date,))
+    cursor.execute(
+        "INSERT INTO Message(user_id, user_request, bot_answer, session_id) VALUES(?,?,?,?,?)",
+        (user_id, user_request, bot_answer, session_id,),
+    )
     database.commit()
 
 
