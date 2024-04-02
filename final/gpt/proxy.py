@@ -1,29 +1,8 @@
-import enum
-from dataclasses import dataclass
-
 import openai
 from tenacity import retry, stop_after_attempt, wait_fixed
 
 import prompts
-
-
-class Role(enum.Enum):
-    SYSTEM = "system"
-    USER = "user"
-    ASSISTANT = "assistant"
-
-
-@dataclass
-class MessageDTO:
-    role: Role
-    content: str
-
-    def as_dict(self):
-        return {"role": self.role.value, "content": self.content}
-
-    @staticmethod
-    def from_user(request):
-        return MessageDTO(Role.USER, request)
+from models import *
 
 
 class GPTProxy:

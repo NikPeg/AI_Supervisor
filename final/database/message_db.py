@@ -1,6 +1,6 @@
 import datetime
 
-from gpt_proxy import MessageDTO, Role
+from gpt.models import MessageDTO, Role
 from . import database, cursor
 from .session_db import get_user_session_id
 
