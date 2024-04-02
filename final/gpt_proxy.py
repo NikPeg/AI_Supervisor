@@ -26,9 +26,6 @@ class MessageDTO:
         return MessageDTO(Role.USER, request)
 
 
-SYSTEM_MESSAGE = MessageDTO(Role.SYSTEM, prompts.KPT_PROMPT)
-
-
 class GPTProxy:
     def __init__(self, token, model="gpt-3.5-turbo"):
         self.client = openai.OpenAI(api_key=token)
@@ -42,7 +39,7 @@ class GPTProxy:
             completion = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    SYSTEM_MESSAGE.as_dict(),
+                    MessageDTO(Role.SYSTEM, prompts.KPT_PROMPT).as_dict(),
                     *[message.as_dict() for message in context],
                     MessageDTO.from_user(request).as_dict(),
                 ]
