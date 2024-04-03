@@ -9,7 +9,7 @@ class GPTProxy:
     def __init__(self, token, model="gpt-3.5-turbo"):
         self.client = openai.OpenAI(api_key=token)
         self.model = model
-        results = openai.files.create(dict(
+        results = self.client.files.create(dict(
             file=open("gpt/SupervisionKPT.docx", "rb"),
             purpose='assistants',
         ))
