@@ -40,6 +40,7 @@ async def start_feed_back():
             try:
                 await bot.send_message(user[0], text=messages.FEEDBACK_ASK, reply_markup=feedback_markup())
                 await bot.send_message(ADMIN_ID, text=messages.FEEDBACK_ASKED.format(user[0]))
+                delete_user_from_feedback(user[0])
             except Exception as e:
                 await bot.send_message(ADMIN_ID, text=e)
                 continue
