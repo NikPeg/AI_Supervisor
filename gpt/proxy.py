@@ -16,16 +16,14 @@ class GPTProxy:
         # print("upload results: " + str(results) + "\n")
         # print("file_id: " + results.id)
         file_id = "file-w5QGfWSaEQdwqu2cuWVr7mTm"
-        results = self.client.fine_tuning.jobs.create(training_file=file_id, model="gpt-3.5-turbo")
-        print("fine-tuning results: " + str(results) + "\n")
-        print("jobs: ", self.client.fine_tuning.jobs.list(limit=10))
-        # client.fine_tuning.jobs.retrieve("ftjob-abc123")
-        #
-        # # Cancel a job
-        # client.fine_tuning.jobs.cancel("ftjob-abc123")
-        #
-        # # List up to 10 events from a fine-tuning job
-        # client.fine_tuning.jobs.list_events(fine_tuning_job_id="ftjob-abc123", limit=10)
+
+        assistant = self.client.assistants.create(
+            model=model,
+            name="frAId supervisor",
+            instructions=prompts.KPT,
+            file_ids=[file_id],
+        )
+        print(assistant)
 
 
     @retry(wait=wait_fixed(21), stop=stop_after_attempt(5))
