@@ -11,7 +11,8 @@ class GPTProxy:
         self.model = model
         results = openai.files.create(
             file=open("gpt/SupervisionKPT.docx", "rb"),
-            purpose='assistants'
+            purpose='assistants',
+            api_key=token,
         )
         print("upload results: " + str(results) + "\n")
         print("file_id: " + results.id)
