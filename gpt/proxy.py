@@ -11,11 +11,11 @@ class GPTProxy:
         self.model = model
         results = self.client.files.create(
             file=open("gpt/SupervisionKPT.docx", "rb"),
-            purpose='assistants',
+            purpose="fine-tune",
         )
         print("upload results: " + str(results) + "\n")
         print("file_id: " + results.id)
-        results = self.client.fine_tuning.create(training_file=results.id, model=model)
+        results = self.client.fine_tuning.jobs.create(training_file=results.id, model=model)
         print("fine-tuning results: " + str(results) + "\n")
         print("\nUse the following command to check the status of your fine-tuning job:")
         print(f"results.id: {results.id}")
