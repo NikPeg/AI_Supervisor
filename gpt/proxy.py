@@ -15,16 +15,17 @@ class GPTProxy:
         # )
         # print("upload results: " + str(results) + "\n")
         # print("file_id: " + results.id)
-        file_id = "file-w5QGfWSaEQdwqu2cuWVr7mTm"
-
-        assistant = self.client.beta.assistants.create(
-            model=model,
-            name="frAId supervisor",
-            tools=[{"type": "retrieval"}],
-            instructions=prompts.KPT,
-            file_ids=[file_id],
-        )
-        print(assistant)
+        # file_id = "file-w5QGfWSaEQdwqu2cuWVr7mTm"
+        #
+        # assistant = self.client.beta.assistants.create(
+        #     model=model,
+        #     name="frAId supervisor",
+        #     tools=[{"type": "retrieval"}],
+        #     instructions=prompts.KPT,
+        #     file_ids=[file_id],
+        # )
+        # Assistant(id='asst_xdH2czQtprOprz3AcAr6LNCi', created_at=1712142908, description=None, file_ids=['file-w5QGfWSaEQdwqu2cuWVr7mTm'], instructions='Ты — эксперт-супервизор когнитивно-поведенческой психотерапии. Ответь на запрос психолога, который к тебе обратился. Ты получишь $1000 за хороший ответ.', metadata={}, model='gpt-4-0125-preview', name='frAId supervisor', object='assistant', tools=[RetrievalTool(type='retrieval')])
+        # print(assistant)
 
 
     @retry(wait=wait_fixed(21), stop=stop_after_attempt(5))
