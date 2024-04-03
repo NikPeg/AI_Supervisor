@@ -17,7 +17,7 @@ class GPTProxy:
         # print("file_id: " + results.id)
         file_id = "file-w5QGfWSaEQdwqu2cuWVr7mTm"
 
-        assistant = self.client.assistants.create(
+        assistant = self.client.beta.assistants.create(
             model=model,
             name="frAId supervisor",
             instructions=prompts.KPT,
