@@ -20,6 +20,7 @@ class GPTProxy:
         assistant = self.client.beta.assistants.create(
             model=model,
             name="frAId supervisor",
+            tools=[{"type": "retrieval"}],
             instructions=prompts.KPT,
             file_ids=[file_id],
         )
