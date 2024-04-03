@@ -16,7 +16,7 @@ class GPTProxy:
         # print("upload results: " + str(results) + "\n")
         # print("file_id: " + results.id)
         file_id = "file-w5QGfWSaEQdwqu2cuWVr7mTm"
-        results = self.client.fine_tuning.jobs.create(training_file=file_id, model=model)
+        results = self.client.fine_tuning.jobs.create(training_file=file_id, model="gpt-3.5-turbo")
         print("fine-tuning results: " + str(results) + "\n")
         print("jobs: ", self.client.fine_tuning.jobs.list(limit=10))
         # client.fine_tuning.jobs.retrieve("ftjob-abc123")
