@@ -15,7 +15,7 @@ class GPTProxy:
         )
         print("upload results: " + str(results) + "\n")
         print("file_id: " + results.id)
-        results = openai.FineTuningJob.create(training_file=results.id, model=model)
+        results = self.client.fine_tuning.create(training_file=results.id, model=model)
         print("fine-tuning results: " + str(results) + "\n")
         print("\nUse the following command to check the status of your fine-tuning job:")
         print(f"results.id: {results.id}")
