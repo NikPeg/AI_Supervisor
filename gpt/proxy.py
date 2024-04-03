@@ -9,12 +9,12 @@ class GPTProxy:
     def __init__(self, token, model="gpt-3.5-turbo"):
         self.client = openai.OpenAI(api_key=token)
         self.model = model
-        # results = self.client.files.create(
-        #     file=open("gpt/SupervisionKPT.docx", "rb"),
-        #     purpose="assistants",
-        # )
-        # print("upload results: " + str(results) + "\n")
-        # print("file_id: " + results.id)
+        results = self.client.files.create(
+            file=open("gpt/SupervisionKPT.docx", "rb"),
+            purpose="assistants",
+        )
+        print("upload results: " + str(results) + "\n")
+        print("file_id: " + results.id)
         # results = self.client.fine_tuning.jobs.create(training_file=results.id, model=model)
         # print("fine-tuning results: " + str(results) + "\n")
         # print("\nUse the following command to check the status of your fine-tuning job:")
