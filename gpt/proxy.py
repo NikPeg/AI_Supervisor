@@ -9,10 +9,12 @@ from .models import *
 class EventHandler(AssistantEventHandler):
     @override
     def on_text_created(self, text) -> None:
+        print("!!!on_text_created!!!")
         print(f"\nassistant > ", end="", flush=True)
 
     @override
     def on_text_delta(self, delta, snapshot):
+        print("!!!on_text_delta!!!")
         print(delta.value, end="", flush=True)
 
 
@@ -54,6 +56,7 @@ class GPTProxy:
         return message
 
     def run_stream(self, thread_id):
+        print("!!!run_stream!!!")
         with self.client.beta.threads.runs.stream(
                 thread_id=thread_id,
                 assistant_id=self.assistant_id,
