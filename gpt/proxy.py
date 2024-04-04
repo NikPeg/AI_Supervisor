@@ -29,6 +29,8 @@ class GPTProxy:
         self.assistant_id = "asst_L31dnMUHlUaK60KRxZWfh1ug"
         self.bot = bot
 
+        self.stop_stream("thread_VwfnpzfxF1oPLtZOOTILAWcs", "run_thWnCrJWQecizkVZBblCXXZO")
+
     def upload_file(self, path, purpose="assistants"):
         result = self.client.files.create(
             file=open(path, "rb"),
@@ -69,6 +71,12 @@ class GPTProxy:
                 event_handler=EventHandler(self.bot),
         ) as stream:
             stream.until_done()
+
+    def stop_stream(self, thread_id, run_id):
+        self.client.beta.threads.runs.cancel(
+            thread_id=thread_id,
+            run_id=run_id,
+        )
 
     @retry(wait=wait_fixed(21), stop=stop_after_attempt(5))
     def ask(self, request, context=None):
