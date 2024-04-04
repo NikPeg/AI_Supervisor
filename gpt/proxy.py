@@ -36,7 +36,7 @@ class GPTProxy:
             completion = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    MessageDTO(Role.SYSTEM, prompts.KPT).as_dict(),
+                    MessageDTO(Role.SYSTEM, prompts.BIG_KPT).as_dict(),
                     *[message.as_dict() for message in context],
                     MessageDTO.from_user(request).as_dict(),
                 ]
