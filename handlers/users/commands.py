@@ -89,7 +89,7 @@ async def create_user_req(user_id, user_name, request_text):
     thread_id = get_thread_id(user_id)
     await gpt.add_message(thread_id, request_text)
     bot_answer = await gpt.get_answer(thread_id)
-    await bot.send_message(user_id, process_message(bot_answer), parse_mode='MarkdownV2')
+    await bot.send_message(user_id, process_message(bot_answer), parse_mode='Markdown')
     await bot.send_message(
         ADMIN_ID,
         process_message(messages.BOT_ANSWERED.format(user_id, user_name, bot_answer)),
