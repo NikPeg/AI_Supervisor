@@ -76,7 +76,7 @@ async def answer_message_handler(message: types.Message):
     if message.chat.id != ADMIN_ID:
         return
     if not message.reply_to_message:
-        bot.send_message(ADMIN_ID, messages.WRONG_MESSAGE)
+        await bot.send_message(ADMIN_ID, messages.WRONG_MESSAGE)
         return
     user_id = int(message.reply_to_message.text.split()[1])
     username = message.reply_to_message.text.split()[4][1:]
