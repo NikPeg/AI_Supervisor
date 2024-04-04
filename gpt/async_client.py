@@ -3,10 +3,11 @@ from openai import OpenAI, AsyncOpenAI
 from dotenv import load_dotenv
 import asyncio
 import time
+import config
 
 # env variables
 load_dotenv()
-my_key = os.getenv('OPENAI_API_KEY')
+my_key = config.GPT_TOKEN
 
 # OpenAI API
 client = AsyncOpenAI(api_key=my_key)
