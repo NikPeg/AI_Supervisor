@@ -90,6 +90,8 @@ async def create_user_req(user_id, user_name, request_text):
     await gpt.add_message(thread_id, request_text)
     bot_answer = "*Это текст, написанный курсивом.*"  # await gpt.get_answer(thread_id)
     try:
+        new_answer = markdown_to_telegram(bot_answer)
+        print(new_answer)
         await bot.send_message(user_id, markdown_to_telegram(bot_answer), parse_mode='Markdown')
     except Exception as e:
         print(e)
