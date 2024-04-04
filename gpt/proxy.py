@@ -64,7 +64,7 @@ class GPTProxy:
 
     def create_thread(self):
         thread = self.client.beta.threads.create()
-        return thread
+        return thread.id
 
     async def get_answer(self, thread):
         print("Thinking...")
