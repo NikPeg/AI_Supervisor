@@ -34,7 +34,7 @@ async def get_answer(assistant_id, thread):
     print("Thinking...")
     # run assistant
     print("Running assistant...")
-    run =  await client.beta.threads.runs.create(
+    run = await client.beta.threads.runs.create(
         thread_id=thread.id,
         assistant_id=assistant_id
     )

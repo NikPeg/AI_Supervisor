@@ -5,6 +5,8 @@ from openai import AssistantEventHandler
 from . import prompts
 from .models import *
 from config import ADMIN_ID
+from openai import OpenAI, AsyncOpenAI
+import time
 
 
 class EventHandler(AssistantEventHandler):
@@ -28,6 +30,7 @@ class GPTProxy:
         self.model = model
         self.assistant_id = "asst_L31dnMUHlUaK60KRxZWfh1ug"
         self.bot = bot
+        self.aclient = AsyncOpenAI(api_key=token)
 
         # self.stop_stream("thread_VwfnpzfxF1oPLtZOOTILAWcs", "run_thWnCrJWQecizkVZBblCXXZO")
 
@@ -50,33 +53,44 @@ class GPTProxy:
         # assistant_id = "asst_L31dnMUHlUaK60KRxZWfh1ug"
         return assistant.id
 
-    def create_thread(self):
-        thread = self.client.beta.threads.create()
-        return thread.id
-
-    def add_message(self, thread_id, message):
-        message = self.client.beta.threads.messages.create(
+    async def add_message(self, thread_id, user_question):
+        # Create a message inside the thread
+        message = await self.aclient.beta.threads.messages.create(
             thread_id=thread_id,
             role="user",
-            content=message,
+            content= user_question
         )
         return message
 
-    def run_stream(self, thread_id):
-        print("!!!run_stream!!!")
-        with self.client.beta.threads.runs.stream(
-                thread_id=thread_id,
-                assistant_id=self.assistant_id,
-                instructions=prompts.BIG_KPT,
-                event_handler=EventHandler(self.bot),
-        ) as stream:
-            stream.until_done()
+    async def create_thread(self):
+        thread = await self.aclient.beta.threads.create()
+        return thread
 
-    def stop_stream(self, thread_id, run_id):
-        self.client.beta.threads.runs.cancel(
-            thread_id=thread_id,
-            run_id=run_id,
+    async def get_answer(self, thread):
+        print("Thinking...")
+        # run assistant
+        print("Running assistant...")
+        run = await self.aclient.beta.threads.runs.create(
+            thread_id=thread.id,
+            assistant_id=self.assistant_id,
         )
+
+        # wait for the run to complete
+        while True:
+            runInfo = await self.aclient.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
+            if runInfo.completed_at:
+                # elapsed = runInfo.completed_at - runInfo.created_at
+                # elapsed = time.strftime("%H:%M:%S", time.gmtime(elapsed))
+                print(f"Run completed")
+                break
+            print("Waiting 1sec...")
+            time.sleep(1)
+
+        print("All done...")
+        # Get messages from the thread
+        messages = await self.aclient.beta.threads.messages.list(thread.id)
+        message_content = messages.data[0].content[0].text.value
+        return message_content
 
     @retry(wait=wait_fixed(21), stop=stop_after_attempt(5))
     def ask(self, request, context=None):

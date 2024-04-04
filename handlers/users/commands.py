@@ -68,9 +68,6 @@ async def help_message_handler(message: types.Message):
         messages.BUTTON_PRESSED.format(message.chat.id, message.chat.username, message.text),
     )
     await UserState.gpt_request.set()
-    if message.chat.id == ADMIN_ID:
-        thread_id = get_thread_id(message.chat.id)
-        gpt.run_stream(thread_id)
 
 
 @dp.message_handler(state=UserState.gpt_request)
@@ -83,7 +80,9 @@ async def user_gpt_req_handler(message: types.Message):
 async def create_user_req(user_id, user_name, request_text):
     if user_id == ADMIN_ID:
         thread_id = get_thread_id(user_id)
-        gpt.add_message(thread_id, request_text)
+        await gpt.add_message(thread_id, request_text)
+        bot_answer = await gpt.get_answer(thread_id)
+        await bot.send_message(user_id, bot_answer)
         return
 
     conversation = get_conversation_by_user(user_id)
