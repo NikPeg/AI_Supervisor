@@ -78,9 +78,11 @@ class GPTProxy:
         message_content = messages.data[0].content[0].text.value
         print("messages", messages)
         print()
-        for d in messages.data:
-            print(d)
-        return message_content
+        assistant_messages = []
+        for message_data in messages.data:
+            if message_data.role == "'assistant":
+                assistant_messages.append(message_data.content[0].text.value)
+        return "".join(assistant_messages[::-1])
 
     @retry(wait=wait_fixed(21), stop=stop_after_attempt(5))
     def ask(self, request, context=None):
