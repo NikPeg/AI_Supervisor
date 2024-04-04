@@ -9,8 +9,8 @@ def markdown_to_html(s):
     s = re.sub(r"\*(.*?)\*", r"<i>\1</i>", s)
 
     # Заменяем заголовки
-    s = re.sub(r"$### (.*?)\n", r"\n<b>\1</b>\n", s)
+    s = re.sub(r"^### (.*?)\n", r"<b>\1</b>\n", s)
     s = re.sub(r"\n### (.*?)\n", r"\n<b>\1</b>\n", s)
     s = re.sub(r"\n### (.*?)\n", r"\n<b>\1</b>\n", s)
-    s = re.sub(r"### (.*?)^", r"\n<b>\1</b>\n", s)
+    s = re.sub(r"\n### (.*?)$", r"\n<b>\1</b>", s)
     return s
