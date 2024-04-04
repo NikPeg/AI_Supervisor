@@ -80,7 +80,7 @@ async def answer_message_handler(message: types.Message):
         return
     user_id = int(message.reply_to_message.text.split()[1])
     username = message.reply_to_message.text.split()[4][1:]
-    request_text = message.reply_to_message.text
+    request_text = " ".join(message.reply_to_message.text.split()[7:])
     try:
         await asyncio.create_task(create_user_req(user_id, username, request_text))
     except openai.BadRequestError as e:
