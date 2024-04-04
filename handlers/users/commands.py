@@ -7,7 +7,7 @@ import buttons
 import messages
 from config import ADMIN_ID
 from database.message_db import add_new_message, get_conversation_by_user
-from database.session_db import create_new_session
+from database.session_db import create_new_session, get_thread_id
 from database.user_db import add_new_user
 from keyboards.keyboards import start_markup, return_markup
 from loader import dp, bot, gpt
@@ -62,13 +62,15 @@ async def help_message_handler(message: types.Message):
 @dp.message_handler(commands=['new'], state="*")
 async def help_message_handler(message: types.Message):
     await bot.send_message(message.chat.id, NEW_PROMPT)
-    thread_id = gpt.create_thread()
-    create_new_session(message.chat.id, thread_id)
+    create_new_session(message.chat.id)
     await bot.send_message(
         ADMIN_ID,
         messages.BUTTON_PRESSED.format(message.chat.id, message.chat.username, message.text),
     )
     await UserState.gpt_request.set()
+    if message.chat.id == ADMIN_ID:
+        thread_id = get_thread_id(message.chat.id)
+        gpt.run_stream(thread_id)
 
 
 @dp.message_handler(state=UserState.gpt_request)
@@ -87,3 +89,10 @@ async def create_user_req(user_id, user_name, request_text):
         ADMIN_ID,
         messages.MESSAGE_SENT.format(user_id, user_name, request_text, bot_answer),
     )
+
+    if user_id == ADMIN_ID:
+        thread_id = get_thread_id(user_id)
+        gpt.add_message(
+            thread_id,
+            content=request_text
+        )
