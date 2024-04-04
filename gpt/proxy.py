@@ -80,8 +80,10 @@ class GPTProxy:
         print()
         assistant_messages = []
         for message_data in messages.data:
-            if message_data.role == "'assistant":
+            if message_data.role == "assistant":
                 assistant_messages.append(message_data.content[0].text.value)
+            else:
+                break
         return "".join(assistant_messages[::-1])
 
     @retry(wait=wait_fixed(21), stop=stop_after_attempt(5))
