@@ -20,7 +20,7 @@ def get_user_session_id(user_id):
 def get_thread_id(user_id):
     cursor.execute("SELECT thread_id FROM Session WHERE user_id=? ORDER BY id DESC LIMIT 1", (user_id,))
     thread_id = cursor.fetchone()
-    if thread_id is None:
+    if thread_id is None or thread_id[0]:
         create_new_session(user_id)
         return get_thread_id(user_id)
     return int(thread_id[0])
