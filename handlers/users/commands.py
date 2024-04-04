@@ -78,27 +78,28 @@ async def user_gpt_req_handler(message: types.Message):
 
 
 def process_text(text):
-    return (
-        text
-        .replace("\_", "\\_")
-        # .replace("\*", "\\*")
-        .replace("\[", "\\[")
-        .replace("\]", "\\]")
-        .replace("\(", "\\(")
-        .replace("\)", "\\)")
-        .replace("\~", "\\~")
-        # .replace("\`", "\\`")
-        .replace("\>", "\\>")
-        .replace("\#", "\\#")
-        .replace("\+", "\\+")
-        .replace("\-", "\\-")
-        .replace("\=", "\\=")
-        .replace("\|", "\\|")
-        .replace("\{", "\\{")
-        .replace("\}", "\\}")
-        .replace("\.", "\\.")
-        .replace("\!", "\\!")
-    )
+    return text
+    # return (
+    #     text
+    #     .replace("\_", "\\_")
+    #     # .replace("\*", "\\*")
+    #     .replace("\[", "\\[")
+    #     .replace("\]", "\\]")
+    #     .replace("\(", "\\(")
+    #     .replace("\)", "\\)")
+    #     .replace("\~", "\\~")
+    #     # .replace("\`", "\\`")
+    #     .replace("\>", "\\>")
+    #     .replace("\#", "\\#")
+    #     .replace("\+", "\\+")
+    #     .replace("\-", "\\-")
+    #     .replace("\=", "\\=")
+    #     .replace("\|", "\\|")
+    #     .replace("\{", "\\{")
+    #     .replace("\}", "\\}")
+    #     .replace("\.", "\\.")
+    #     .replace("\!", "\\!")
+    # )
 
 
 async def create_user_req(user_id, user_name, request_text):
