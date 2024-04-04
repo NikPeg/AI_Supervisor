@@ -12,7 +12,7 @@ from keyboards.keyboards import start_markup, return_markup
 from loader import dp, bot, gpt
 from messages import HELP, START, PROMPT, NEW_PROMPT
 from aiogram.types import ParseMode
-
+import openai
 from utils.bot_utils import send_big_message
 from utils.formatting import markdown_to_html
 
@@ -77,7 +77,10 @@ async def help_message_handler(message: types.Message):
 @dp.message_handler(state=default_state)
 async def user_gpt_req_handler(message: types.Message):
     request_text = message.text
-    await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
+    try:
+        await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
+    except openai.BadRequestError:
+        await bot.send_message(message.chat.id, messages.WAIT)
 
 
 async def create_user_req(user_id, user_name, request_text):
