@@ -1,20 +1,18 @@
 import asyncio
 
+import openai
 from aiogram import types
 from aiogram.dispatcher.filters.state import State, StatesGroup, default_state
 from config import ADMIN_ID
+
 import buttons
 import messages
-from database.message_db import add_new_message
-from database.session_db import create_new_session, get_thread_id
+from database.session_db import create_new_session
 from database.user_db import add_new_user
+from handlers.common import create_user_req
 from keyboards.keyboards import start_markup, return_markup
-from loader import dp, bot, gpt
+from loader import dp, bot
 from messages import HELP, START, PROMPT, NEW_PROMPT
-from aiogram.types import ParseMode
-import openai
-from utils.bot_utils import send_big_message
-from utils.formatting import markdown_to_html
 
 
 class UserState(StatesGroup):
@@ -73,47 +71,14 @@ async def help_message_handler(message: types.Message):
     await UserState.gpt_request.set()
 
 
-TYPING_ACTION = "typing"
-
-
 @dp.message_handler(state=UserState.gpt_request)
 @dp.message_handler(state=default_state)
 async def user_gpt_req_handler(message: types.Message):
-    await bot.send_chat_action(message.chat.id, TYPING_ACTION)
     request_text = message.text
     try:
         await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
-    except openai.BadRequestError:
+    except openai.BadRequestError as e:
         await bot.send_message(message.chat.id, messages.WAIT)
-
-
-async def create_user_req(user_id, user_name, request_text):
-    async def typing():
-        await bot.send_chat_action(user_id, TYPING_ACTION)
-
-    await typing()
-    await send_big_message(
-        bot,
-        ADMIN_ID,
-        messages.MESSAGE_SENT.format(user_id, user_name, request_text),
-    )
-    thread_id = get_thread_id(user_id)
-    await typing()
-    await gpt.add_message(thread_id, request_text)
-    await typing()
-    bot_answer = await gpt.get_answer(thread_id, typing)
-    try:
-        await send_big_message(bot, user_id, markdown_to_html(bot_answer), parse_mode=ParseMode.HTML)
+        await bot.send_message(ADMIN_ID, messages.WAIT + e)
     except Exception as e:
-        await send_big_message(bot, user_id, bot_answer)
-        await send_big_message(
-            bot,
-            ADMIN_ID,
-            messages.PARSING_ERROR.format(e),
-        )
-    await send_big_message(
-        bot,
-        ADMIN_ID,
-        messages.BOT_ANSWERED.format(user_id, user_name, bot_answer),
-    )
-    add_new_message(user_id, request_text, bot_answer)
+        await bot.send_message(ADMIN_ID, messages.UNKNOWN_ERROR + e)
