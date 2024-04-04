@@ -66,12 +66,12 @@ class GPTProxy:
         thread = self.client.beta.threads.create()
         return thread.id
 
-    async def get_answer(self, thread):
+    async def get_answer(self, thread_id):
         print("Thinking...")
         # run assistant
         print("Running assistant...")
         run = await self.aclient.beta.threads.runs.create(
-            thread_id=thread.id,
+            thread_id=thread_id,
             assistant_id=self.assistant_id,
         )
 
