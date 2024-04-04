@@ -92,7 +92,4 @@ async def create_user_req(user_id, user_name, request_text):
 
     if user_id == ADMIN_ID:
         thread_id = get_thread_id(user_id)
-        gpt.add_message(
-            thread_id,
-            content=request_text
-        )
+        gpt.add_message(thread_id, request_text)
