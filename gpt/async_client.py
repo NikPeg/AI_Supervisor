@@ -72,8 +72,8 @@ if __name__ == "__main__":
             UNDERLINE = '\033[4m'
 
         # Create assistant and thread before entering the loop
-        assistant = await create_assistant()
-        print("Created assistant with id:" , f"{bcolors.HEADER}{assistant.id}{bcolors.ENDC}")
+        assistant_id = await create_assistant()
+        print("Created assistant with id:" , f"{bcolors.HEADER}{assistant_id}{bcolors.ENDC}")
         thread = await client.beta.threads.create()
         print("Created thread with id:" , f"{bcolors.HEADER}{thread.id}{bcolors.ENDC}")
         while True:
@@ -83,9 +83,9 @@ if __name__ == "__main__":
 
             # Add message to thread
             await add_message_to_thread(thread.id, question)
-            message_content = await get_answer(assistant.id, thread)
+            message_content = await get_answer(assistant_id, thread)
             print(f"FYI, your thread is: , {bcolors.HEADER}{thread.id}{bcolors.ENDC}")
-            print(f"FYI, your assistant is: , {bcolors.HEADER}{assistant.id}{bcolors.ENDC}")
+            print(f"FYI, your assistant is: , {bcolors.HEADER}{assistant_id}{bcolors.ENDC}")
             print(message_content)
         print(f"{bcolors.OKGREEN}Thanks and happy to serve you{bcolors.ENDC}")
     asyncio.run(main())
