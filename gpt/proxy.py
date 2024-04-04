@@ -9,8 +9,7 @@ class GPTProxy:
     def __init__(self, token, model="gpt-3.5-turbo"):
         self.client = openai.OpenAI(api_key=token)
         self.model = model
-        self.assistant = self.create_assistant("frAId", prompts.BIG_KPT, ["file-w5QGfWSaEQdwqu2cuWVr7mTm"])
-        print("ASSISTENT:", self.assistant)
+        self.assistant = "asst_L31dnMUHlUaK60KRxZWfh1ug"
 
     def upload_file(self, path, purpose="assistants"):
         result = self.client.files.create(
@@ -28,7 +27,7 @@ class GPTProxy:
             instructions=instructions,
             file_ids=file_ids,
         )
-        id = 'asst_xdH2czQtprOprz3AcAr6LNCi'
+        id = "asst_L31dnMUHlUaK60KRxZWfh1ug"
         return assistant.id
 
 
