@@ -4,37 +4,30 @@ from typing_extensions import override
 from openai import AssistantEventHandler
 from . import prompts
 from .models import *
+from config import ADMIN_ID
 
 
 class EventHandler(AssistantEventHandler):
+    def __init__(self, bot):
+        self.bot = bot
+
     @override
     def on_text_created(self, text) -> None:
-        print("!!!on_text_created!!!")
-        print(f"\nassistant > ", end="", flush=True)
+        self.bot.send_message(ADMIN_ID, f"\nassistant > ")
+        # print(f"\nassistant > ", end="", flush=True)
 
     @override
     def on_text_delta(self, delta, snapshot):
+        self.bot.send_message(ADMIN_ID, delta.value)
         print(delta.value, end="", flush=True)
-
-    def on_tool_call_created(self, tool_call):
-        print(f"\nassistant > {tool_call.type}\n", flush=True)
-
-    def on_tool_call_delta(self, delta, snapshot):
-        if delta.type == 'code_interpreter':
-            if delta.code_interpreter.input:
-                print(delta.code_interpreter.input, end="", flush=True)
-            if delta.code_interpreter.outputs:
-                print(f"\n\noutput >", flush=True)
-                for output in delta.code_interpreter.outputs:
-                    if output.type == "logs":
-                        print(f"\n{output.logs}", flush=True)
 
 
 class GPTProxy:
-    def __init__(self, token, model="gpt-3.5-turbo"):
+    def __init__(self, token, model="gpt-3.5-turbo", bot=None):
         self.client = openai.OpenAI(api_key=token)
         self.model = model
         self.assistant_id = "asst_L31dnMUHlUaK60KRxZWfh1ug"
+        self.bot = bot
 
     def upload_file(self, path, purpose="assistants"):
         result = self.client.files.create(
@@ -73,7 +66,7 @@ class GPTProxy:
                 thread_id=thread_id,
                 assistant_id=self.assistant_id,
                 instructions=prompts.BIG_KPT,
-                event_handler=EventHandler(),
+                event_handler=EventHandler(self.bot),
         ) as stream:
             stream.until_done()
 

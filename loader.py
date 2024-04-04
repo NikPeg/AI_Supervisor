@@ -7,4 +7,4 @@ from gpt.proxy import GPTProxy
 bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
-gpt = GPTProxy(config.GPT_TOKEN, config.MODEL)
+gpt = GPTProxy(config.GPT_TOKEN, config.MODEL, bot)
