@@ -3,7 +3,7 @@ from openai import OpenAI, AsyncOpenAI
 from dotenv import load_dotenv
 import asyncio
 import time
-import config
+from . import config
 
 # env variables
 load_dotenv()
