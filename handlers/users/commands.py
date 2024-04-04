@@ -90,4 +90,5 @@ async def create_user_req(user_id, user_name, request_text):
         ADMIN_ID,
         messages.BOT_ANSWERED.format(user_id, user_name, bot_answer),
     )
+    add_new_message(user_id, request_text, bot_answer)
 
