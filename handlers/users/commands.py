@@ -78,19 +78,16 @@ async def user_gpt_req_handler(message: types.Message):
 
 
 async def create_user_req(user_id, user_name, request_text):
-    if user_id == ADMIN_ID:
-        thread_id = get_thread_id(user_id)
-        await gpt.add_message(thread_id, request_text)
-        bot_answer = await gpt.get_answer(thread_id)
-        await bot.send_message(user_id, bot_answer)
-        return
-
-    conversation = get_conversation_by_user(user_id)
-    bot_answer = gpt.ask(request_text, conversation)
-    add_new_message(user_id, request_text, bot_answer)
+    await bot.send_message(
+        ADMIN_ID,
+        messages.MESSAGE_SENT.format(user_id, user_name, request_text),
+    )
+    thread_id = get_thread_id(user_id)
+    await gpt.add_message(thread_id, request_text)
+    bot_answer = await gpt.get_answer(thread_id)
     await bot.send_message(user_id, bot_answer)
     await bot.send_message(
         ADMIN_ID,
-        messages.MESSAGE_SENT.format(user_id, user_name, request_text, bot_answer),
+        messages.BOT_ANSWERED.format(user_id, user_name, bot_answer),
     )
 

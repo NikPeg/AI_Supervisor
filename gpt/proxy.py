@@ -67,27 +67,15 @@ class GPTProxy:
         return thread.id
 
     async def get_answer(self, thread_id):
-        print("Thinking...")
-        # run assistant
-        print("Running assistant...")
         run = await self.aclient.beta.threads.runs.create(
             thread_id=thread_id,
             assistant_id=self.assistant_id,
         )
-
-        # wait for the run to complete
         while True:
-            runInfo = await self.aclient.beta.threads.runs.retrieve(thread_id=thread_id, run_id=run.id)
-            if runInfo.completed_at:
-                # elapsed = runInfo.completed_at - runInfo.created_at
-                # elapsed = time.strftime("%H:%M:%S", time.gmtime(elapsed))
-                print(f"Run completed")
+            run_info = await self.aclient.beta.threads.runs.retrieve(thread_id=thread_id, run_id=run.id)
+            if run_info.completed_at:
                 break
-            print("Waiting 1sec...")
             time.sleep(1)
-
-        print("All done...")
-        # Get messages from the thread
         messages = await self.aclient.beta.threads.messages.list(thread_id)
         message_content = messages.data[0].content[0].text.value
         return message_content
