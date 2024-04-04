@@ -110,7 +110,7 @@ async def create_user_req(user_id, user_name, request_text):
     await gpt.add_message(thread_id, request_text)
     bot_answer = await gpt.get_answer(thread_id)
     try:
-        await bot.send_message(user_id, bot_answer, parse_mode='MarkdownV4')
+        await bot.send_message(user_id, bot_answer, parse_mode='Markdown')
     except Exception as e:
         print(e)
         await bot.send_message(user_id, bot_answer)
