@@ -77,29 +77,8 @@ async def user_gpt_req_handler(message: types.Message):
     await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
 
 
-def process_text(text):
-    return text.replace("**", "*")
-    # return (
-    #     text
-    #     .replace("\_", "\\_")
-    #     # .replace("\*", "\\*")
-    #     .replace("\[", "\\[")
-    #     .replace("\]", "\\]")
-    #     .replace("\(", "\\(")
-    #     .replace("\)", "\\)")
-    #     .replace("\~", "\\~")
-    #     # .replace("\`", "\\`")
-    #     .replace("\>", "\\>")
-    #     .replace("\#", "\\#")
-    #     .replace("\+", "\\+")
-    #     .replace("\-", "\\-")
-    #     .replace("\=", "\\=")
-    #     .replace("\|", "\\|")
-    #     .replace("\{", "\\{")
-    #     .replace("\}", "\\}")
-    #     .replace("\.", "\\.")
-    #     .replace("\!", "\\!")
-    # )
+def markdown_to_telegram(text):
+    return text.replace("**", "ⓩ").replace("*", "__").replace("ⓩ", "*")
 
 
 async def create_user_req(user_id, user_name, request_text):
@@ -109,7 +88,7 @@ async def create_user_req(user_id, user_name, request_text):
     )
     thread_id = get_thread_id(user_id)
     await gpt.add_message(thread_id, request_text)
-    bot_answer = process_text(await gpt.get_answer(thread_id))
+    bot_answer = markdown_to_telegram(await gpt.get_answer(thread_id))
     try:
         await bot.send_message(user_id, bot_answer, parse_mode='Markdown')
     except Exception as e:
