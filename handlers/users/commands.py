@@ -95,7 +95,11 @@ async def create_user_req(user_id, user_name, request_text):
     )
     thread_id = get_thread_id(user_id)
     await gpt.add_message(thread_id, request_text)
-    bot_answer = await gpt.get_answer(thread_id)
+
+    async def func():
+        await bot.send_chat_action(user_id, TYPING_ACTION)
+
+    bot_answer = await gpt.get_answer(thread_id, func)
     try:
         await send_big_message(bot, user_id, markdown_to_html(bot_answer), parse_mode=ParseMode.HTML)
     except Exception as e:
