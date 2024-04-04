@@ -13,6 +13,7 @@ from loader import dp, bot, gpt
 from messages import HELP, START, PROMPT, NEW_PROMPT
 from aiogram.types import ParseMode
 
+from utils.bot_utils import send_big_message
 from utils.formatting import markdown_to_html
 
 
@@ -80,7 +81,8 @@ async def user_gpt_req_handler(message: types.Message):
 
 
 async def create_user_req(user_id, user_name, request_text):
-    await bot.send_message(
+    await send_big_message(
+        bot,
         ADMIN_ID,
         messages.MESSAGE_SENT.format(user_id, user_name, request_text),
     )
@@ -88,14 +90,16 @@ async def create_user_req(user_id, user_name, request_text):
     await gpt.add_message(thread_id, request_text)
     bot_answer = await gpt.get_answer(thread_id)
     try:
-        await bot.send_message(user_id, markdown_to_html(bot_answer), parse_mode=ParseMode.HTML)
+        await send_big_message(bot, user_id, markdown_to_html(bot_answer), parse_mode=ParseMode.HTML)
     except Exception as e:
-        await bot.send_message(user_id, bot_answer)
-        await bot.send_message(
+        await send_big_message(bot, user_id, bot_answer)
+        await send_big_message(
+            bot,
             ADMIN_ID,
             messages.PARSING_ERROR.format(e),
         )
-    await bot.send_message(
+    await send_big_message(
+        bot,
         ADMIN_ID,
         messages.BOT_ANSWERED.format(user_id, user_name, bot_answer),
     )
