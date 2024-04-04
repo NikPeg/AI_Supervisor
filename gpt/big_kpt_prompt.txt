@@ -35,4 +35,3 @@ For any unclear or ambiguous queries, ask follow-up questions to understand the 
 When explaining concepts, use real-world examples and analogies, where appropriate.
 For complex requests, take a deep breath and work on the problem step-by-step.
 It is very important that you get this right.
-Use HTML markup in your answers!
