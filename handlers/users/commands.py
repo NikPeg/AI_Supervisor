@@ -1,13 +1,12 @@
 import asyncio
 
-import aiogram
 from aiogram import types
 from aiogram.dispatcher.filters.state import State, StatesGroup, default_state
+from config import ADMIN_ID
 
 import buttons
 import messages
-from config import ADMIN_ID
-from database.message_db import add_new_message, get_conversation_by_user
+from database.message_db import add_new_message
 from database.session_db import create_new_session, get_thread_id
 from database.user_db import add_new_user
 from keyboards.keyboards import start_markup, return_markup
@@ -78,6 +77,30 @@ async def user_gpt_req_handler(message: types.Message):
     await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
 
 
+def process_text(text):
+    return (
+        text
+        .replace("\_", "\\_")
+        .replace("\*", "\\*")
+        .replace("\[", "\\[")
+        .replace("\]", "\\]")
+        .replace("\(", "\\(")
+        .replace("\)", "\\)")
+        .replace("\~", "\\~")
+        .replace("\`", "\\`")
+        .replace("\>", "\\>")
+        .replace("\#", "\\#")
+        .replace("\+", "\\+")
+        .replace("\-", "\\-")
+        .replace("\=", "\\=")
+        .replace("\|", "\\|")
+        .replace("\{", "\\{")
+        .replace("\}", "\\}")
+        .replace("\.", "\\.")
+        .replace("\!", "\\!")
+    )
+
+
 async def create_user_req(user_id, user_name, request_text):
     await bot.send_message(
         ADMIN_ID,
@@ -88,15 +111,11 @@ async def create_user_req(user_id, user_name, request_text):
     bot_answer = await gpt.get_answer(thread_id)
     try:
         await bot.send_message(user_id, bot_answer, parse_mode='MarkdownV4')
-        await bot.send_message(
-            ADMIN_ID,
-            messages.BOT_ANSWERED.format(user_id, user_name, bot_answer),
-        )
-    except Exception:
+    except Exception as e:
+        print(e)
         await bot.send_message(user_id, bot_answer)
-        await bot.send_message(
-            ADMIN_ID,
-            messages.BOT_ANSWERED.format(user_id, user_name, bot_answer),
-        )
+    await bot.send_message(
+        ADMIN_ID,
+        messages.BOT_ANSWERED.format(user_id, user_name, bot_answer),
+    )
     add_new_message(user_id, request_text, bot_answer)
-
