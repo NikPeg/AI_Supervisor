@@ -3,7 +3,6 @@ import asyncio
 from aiogram import types
 from aiogram.dispatcher.filters.state import State, StatesGroup, default_state
 from config import ADMIN_ID
-
 import buttons
 import messages
 from database.message_db import add_new_message
@@ -13,6 +12,9 @@ from keyboards.keyboards import start_markup, return_markup
 from loader import dp, bot, gpt
 from messages import HELP, START, PROMPT, NEW_PROMPT
 from aiogram.types import ParseMode
+
+from utils.formatting import markdown_to_html
+
 
 class UserState(StatesGroup):
     gpt_request = State()
@@ -77,10 +79,6 @@ async def user_gpt_req_handler(message: types.Message):
     await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
 
 
-def markdown_to_telegram(text):
-    return text.replace("**", "ⓩ").replace("*", "__").replace("ⓩ", "*")
-
-
 async def create_user_req(user_id, user_name, request_text):
     await bot.send_message(
         ADMIN_ID,
@@ -90,9 +88,9 @@ async def create_user_req(user_id, user_name, request_text):
     await gpt.add_message(thread_id, request_text)
     bot_answer = await gpt.get_answer(thread_id)
     try:
-        new_answer = markdown_to_telegram(bot_answer)
+        new_answer = markdown_to_html(bot_answer)
         print(new_answer)
-        await bot.send_message(user_id, markdown_to_telegram(bot_answer), parse_mode=ParseMode.MARKDOWN)
+        await bot.send_message(user_id, markdown_to_html(bot_answer), parse_mode=ParseMode.MARKDOWN)
     except Exception as e:
         print(e)
         await bot.send_message(user_id, bot_answer)
