@@ -77,7 +77,7 @@ class GPTProxy:
 
         # wait for the run to complete
         while True:
-            runInfo = await self.aclient.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
+            runInfo = await self.aclient.beta.threads.runs.retrieve(thread_id=thread_id, run_id=run.id)
             if runInfo.completed_at:
                 # elapsed = runInfo.completed_at - runInfo.created_at
                 # elapsed = time.strftime("%H:%M:%S", time.gmtime(elapsed))
@@ -88,7 +88,7 @@ class GPTProxy:
 
         print("All done...")
         # Get messages from the thread
-        messages = await self.aclient.beta.threads.messages.list(thread.id)
+        messages = await self.aclient.beta.threads.messages.list(thread_id)
         message_content = messages.data[0].content[0].text.value
         return message_content
 
