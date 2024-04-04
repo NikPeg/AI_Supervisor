@@ -77,6 +77,10 @@ async def user_gpt_req_handler(message: types.Message):
     await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
 
 
+def process_message(text):
+    return text.replace("_", "\\_").replace("*", "\\*").replace("[", "\\[").replace("`", "\\`")
+
+
 async def create_user_req(user_id, user_name, request_text):
     await bot.send_message(
         ADMIN_ID,
@@ -85,10 +89,10 @@ async def create_user_req(user_id, user_name, request_text):
     thread_id = get_thread_id(user_id)
     await gpt.add_message(thread_id, request_text)
     bot_answer = await gpt.get_answer(thread_id)
-    await bot.send_message(user_id, bot_answer, parse_mode='MarkdownV2')
+    await bot.send_message(user_id, process_message(bot_answer), parse_mode='MarkdownV2')
     await bot.send_message(
         ADMIN_ID,
-        messages.BOT_ANSWERED.format(user_id, user_name, bot_answer),
+        process_message(messages.BOT_ANSWERED.format(user_id, user_name, bot_answer)),
     )
     add_new_message(user_id, request_text, bot_answer)
 
