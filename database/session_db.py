@@ -1,6 +1,7 @@
 from . import database, cursor
 from loader import gpt
 
+
 def create_new_session(user_id):
     thread_id = gpt.create_thread()
     cursor.execute("INSERT INTO Session(user_id, thread_id) VALUES(?, ?)", (user_id, thread_id,))
@@ -23,4 +24,4 @@ def get_thread_id(user_id):
     if not (thread_id and thread_id[0]):
         create_new_session(user_id)
         return get_thread_id(user_id)
-    return int(thread_id[0])
+    return thread_id[0]
