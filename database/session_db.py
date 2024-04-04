@@ -2,7 +2,8 @@ from . import database, cursor
 from loader import gpt
 
 
-def create_new_session(user_id, thread_id=None):
+def create_new_session(user_id):
+    thread_id = gpt.create_thread()
     cursor.execute("INSERT INTO Session(user_id, thread_id) VALUES(?, ?)", (user_id, thread_id,))
     database.commit()
     cursor.execute("SELECT id FROM Session WHERE user_id=? ORDER BY id DESC LIMIT 1", (user_id,))
