@@ -4,7 +4,7 @@ import logging
 from aiogram import executor
 import messages
 import config
-from handlers.users.feedback_func import start_feed_back
+from handlers.users.feedback import start_feed_back
 from loader import bot, dp
 from utils.bot_start_func.set_bot_commands import set_default_commands
 

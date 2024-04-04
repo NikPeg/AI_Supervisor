@@ -1,2 +1,2 @@
-from . import start_command
-from . import feedback_func
+from . import commands
+from . import feedback
