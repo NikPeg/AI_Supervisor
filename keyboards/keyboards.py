@@ -10,8 +10,8 @@ def feedback_markup():
 
 
 def start_markup():
-    markup = InlineKeyboardMarkup(row_width=True)
-    markup.add([buttons.ABOUT, buttons.SOS])
+    markup = InlineKeyboardMarkup(resize_keyboard=True)
+    markup.add(buttons.ABOUT, buttons.SOS)
     return markup
 
 
