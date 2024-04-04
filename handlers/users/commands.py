@@ -12,7 +12,7 @@ from database.user_db import add_new_user
 from keyboards.keyboards import start_markup, return_markup
 from loader import dp, bot, gpt
 from messages import HELP, START, PROMPT, NEW_PROMPT
-
+from aiogram.types import ParseMode
 
 class UserState(StatesGroup):
     gpt_request = State()
@@ -88,11 +88,11 @@ async def create_user_req(user_id, user_name, request_text):
     )
     thread_id = get_thread_id(user_id)
     await gpt.add_message(thread_id, request_text)
-    bot_answer = "*Это текст, написанный курсивом.*"  # await gpt.get_answer(thread_id)
+    bot_answer = await gpt.get_answer(thread_id)
     try:
         new_answer = markdown_to_telegram(bot_answer)
         print(new_answer)
-        await bot.send_message(user_id, markdown_to_telegram(bot_answer), parse_mode='Markdown')
+        await bot.send_message(user_id, markdown_to_telegram(bot_answer), parse_mode=ParseMode.MARKDOWN)
     except Exception as e:
         print(e)
         await bot.send_message(user_id, bot_answer)
