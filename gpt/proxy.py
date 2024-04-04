@@ -9,23 +9,25 @@ class GPTProxy:
     def __init__(self, token, model="gpt-3.5-turbo"):
         self.client = openai.OpenAI(api_key=token)
         self.model = model
-        # results = self.client.files.create(
-        #     file=open("gpt/SupervisionKPT.docx", "rb"),
-        #     purpose="assistants",
-        # )
-        # print("upload results: " + str(results) + "\n")
-        # print("file_id: " + results.id)
-        # file_id = "file-w5QGfWSaEQdwqu2cuWVr7mTm"
-        #
-        # assistant = self.client.beta.assistants.create(
-        #     model=model,
-        #     name="frAId supervisor",
-        #     tools=[{"type": "retrieval"}],
-        #     instructions=prompts.KPT,
-        #     file_ids=[file_id],
-        # )
-        # Assistant(id='asst_xdH2czQtprOprz3AcAr6LNCi', created_at=1712142908, description=None, file_ids=['file-w5QGfWSaEQdwqu2cuWVr7mTm'], instructions='Ты — эксперт-супервизор когнитивно-поведенческой психотерапии. Ответь на запрос психолога, который к тебе обратился. Ты получишь $1000 за хороший ответ.', metadata={}, model='gpt-4-0125-preview', name='frAId supervisor', object='assistant', tools=[RetrievalTool(type='retrieval')])
-        # print(assistant)
+
+    def upload_file(self, path, purpose="assistants"):
+        result = self.client.files.create(
+            file=open(path, "rb"),
+            purpose=purpose,
+        )
+        file_id = "file-w5QGfWSaEQdwqu2cuWVr7mTm"
+        return result.id
+
+    def create_assistant(self, name, instructions, file_ids):
+        assistant = self.client.beta.assistants.create(
+            model=self.model,
+            name=name,
+            tools=[{"type": "retrieval"}],
+            instructions=instructions,
+            file_ids=file_ids,
+        )
+        id = 'asst_xdH2czQtprOprz3AcAr6LNCi'
+        return assistant.id
 
 
     @retry(wait=wait_fixed(21), stop=stop_after_attempt(5))
