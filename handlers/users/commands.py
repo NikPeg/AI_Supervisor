@@ -62,7 +62,8 @@ async def help_message_handler(message: types.Message):
 @dp.message_handler(commands=['new'], state="*")
 async def help_message_handler(message: types.Message):
     await bot.send_message(message.chat.id, NEW_PROMPT)
-    create_new_session(message.chat.id)
+    thread_id = gpt.create_thread()
+    create_new_session(message.chat.id, thread_id)
     await bot.send_message(
         ADMIN_ID,
         messages.BUTTON_PRESSED.format(message.chat.id, message.chat.username, message.text),

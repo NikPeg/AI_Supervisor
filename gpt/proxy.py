@@ -30,6 +30,9 @@ class GPTProxy:
         id = "asst_L31dnMUHlUaK60KRxZWfh1ug"
         return assistant.id
 
+    def create_thread(self):
+        thread = self.client.beta.threads.create()
+        return thread.id
 
     @retry(wait=wait_fixed(21), stop=stop_after_attempt(5))
     def ask(self, request, context=None):
