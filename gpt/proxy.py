@@ -32,8 +32,6 @@ class GPTProxy:
         self.bot = bot
         self.aclient = AsyncOpenAI(api_key=token)
 
-        # self.stop_stream("thread_VwfnpzfxF1oPLtZOOTILAWcs", "run_thWnCrJWQecizkVZBblCXXZO")
-
     def upload_file(self, path, purpose="assistants"):
         result = self.client.files.create(
             file=open(path, "rb"),
@@ -54,7 +52,6 @@ class GPTProxy:
         return assistant.id
 
     async def add_message(self, thread_id, user_question):
-        # Create a message inside the thread
         message = await self.aclient.beta.threads.messages.create(
             thread_id=thread_id,
             role="user",
