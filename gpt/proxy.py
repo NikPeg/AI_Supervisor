@@ -29,7 +29,7 @@ class GPTProxy:
         self.assistant_id = "asst_L31dnMUHlUaK60KRxZWfh1ug"
         self.bot = bot
 
-        self.stop_stream("thread_VwfnpzfxF1oPLtZOOTILAWcs", "run_thWnCrJWQecizkVZBblCXXZO")
+        # self.stop_stream("thread_VwfnpzfxF1oPLtZOOTILAWcs", "run_thWnCrJWQecizkVZBblCXXZO")
 
     def upload_file(self, path, purpose="assistants"):
         result = self.client.files.create(
