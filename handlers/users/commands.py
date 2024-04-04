@@ -91,7 +91,6 @@ async def create_user_req(user_id, user_name, request_text):
         await bot.send_message(
             ADMIN_ID,
             messages.BOT_ANSWERED.format(user_id, user_name, bot_answer),
-            parse_mode='Markdown',
         )
     except Exception:
         await bot.send_message(user_id, bot_answer)
