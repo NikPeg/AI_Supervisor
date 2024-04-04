@@ -75,9 +75,6 @@ class GPTProxy:
                 break
             time.sleep(1)
         messages = await self.aclient.beta.threads.messages.list(thread_id)
-        message_content = messages.data[0].content[0].text.value
-        print("messages", messages)
-        print()
         assistant_messages = []
         for message_data in messages.data:
             if message_data.role == "assistant":
