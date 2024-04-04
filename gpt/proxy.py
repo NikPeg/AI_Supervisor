@@ -77,7 +77,9 @@ class GPTProxy:
         messages = await self.aclient.beta.threads.messages.list(thread_id)
         message_content = messages.data[0].content[0].text.value
         print("messages", messages)
-        print("message_content", message_content)
+        print()
+        for d in messages.data:
+            print(d)
         return message_content
 
     @retry(wait=wait_fixed(21), stop=stop_after_attempt(5))
