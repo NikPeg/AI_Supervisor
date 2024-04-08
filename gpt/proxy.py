@@ -28,7 +28,7 @@ class GPTProxy:
     def __init__(self, token, model="gpt-3.5-turbo", bot=None):
         self.client = openai.OpenAI(api_key=token)
         self.model = model
-        self.assistant_id = "asst_L31dnMUHlUaK60KRxZWfh1ug"
+        self.assistant_id = self.create_assistant("frAId v2", prompts.BIG_KPT, "file-w5QGfWSaEQdwqu2cuWVr7mTm")
         self.bot = bot
         self.aclient = AsyncOpenAI(api_key=token)
 
@@ -48,6 +48,7 @@ class GPTProxy:
             instructions=instructions,
             file_ids=file_ids,
         )
+        print("assistant_id:", assistant.id)
         # assistant_id = "asst_L31dnMUHlUaK60KRxZWfh1ug"
         return assistant.id
 
