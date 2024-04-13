@@ -93,6 +93,8 @@ async def answer_message_handler(message: types.Message):
 @dp.message_handler(state=UserState.gpt_request)
 @dp.message_handler(state=default_state)
 async def user_gpt_req_handler(message: types.Message):
+    if message.chat.id == ADMIN_ID:
+        await bot.send_message(ADMIN_ID, "Проверяем подписку...")
     request_text = message.text
     try:
         await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
