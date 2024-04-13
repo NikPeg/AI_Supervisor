@@ -98,7 +98,8 @@ async def user_gpt_req_handler(message: types.Message):
         await bot.send_message(ADMIN_ID, messages.CHECK_PAYMENT.format(message.chat.id, message.chat.username))
         if not check_payment(message.chat.id):
             await bot.send_message(message.chat.id, messages.EXPIRED_PAYMENT)
-            await bot.send_message(ADMIN_ID, messages.USER_EXPIRED_PAYMENT)
+            await bot.send_message(ADMIN_ID, messages.USER_EXPIRED_PAYMENT.format(message.chat.id, message.chat.username))
+            return
     request_text = message.text
     try:
         await asyncio.create_task(create_user_req(message.chat.id, message.chat.username, request_text))
