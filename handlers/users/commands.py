@@ -66,7 +66,7 @@ async def payment_handler(call: types.CallbackQuery):
     await UserState.payment.set()
 
 
-@dp.callback_query_handler(text="*", commands="*", state=UserState.payment)
+@dp.callback_query_handler(text="*", state=UserState.payment)
 async def paid_handler(call: types.CallbackQuery):
     await bot.send_message(call.message.chat.id, messages.PAYMENT_PROCESS, reply_markup=start_markup())
     await bot.send_message(
