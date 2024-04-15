@@ -57,7 +57,7 @@ async def return_handler(call: types.CallbackQuery):
 
 @dp.callback_query_handler(text='payment', state="*")
 async def payment_handler(call: types.CallbackQuery):
-    link = client.create_order(config.PRICE, Currency.RUB, messages.PAYMENT_DESCRIPTION).url
+    link = client.create_order(config.PRICE, Currency.RUB, messages.PAYMENT_DESCRIPTION, account_id=call.message.chat.id).url
     await call.message.edit_text(messages.PAYMENT_LINK.format(link), reply_markup=return_markup())
     await bot.send_message(
         ADMIN_ID,
