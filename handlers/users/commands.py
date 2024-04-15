@@ -58,7 +58,7 @@ async def return_handler(call: types.CallbackQuery):
 @dp.callback_query_handler(text='payment', state="*")
 async def payment_handler(call: types.CallbackQuery):
     link = client.create_order(config.PRICE, Currency.RUB, "Бот").url
-    await call.message.edit_text(messages.PAYMENT_LINK.format(link), reply_markup=start_markup())
+    await call.message.edit_text(messages.PAYMENT_LINK.format(link), reply_markup=return_markup())
     await bot.send_message(
         ADMIN_ID,
         messages.BUTTON_PRESSED.format(call.message.chat.id, call.message.chat.username, buttons.PAYMENT.text),
@@ -68,7 +68,7 @@ async def payment_handler(call: types.CallbackQuery):
 
 @dp.message_handler(state=UserState.payment)
 async def paid_handler(message: types.Message):
-    await bot.send_message(message.chat.id, messages.PAYMENT_PROCESS, reply_markup=start_markup())
+    await bot.send_message(message.chat.id, messages.PAYMENT_PROCESS, reply_markup=return_markup())
     await bot.send_message(
         ADMIN_ID,
         messages.MESSAGE_SENT.format(message.chat.id, message.chat.username, message.text),
