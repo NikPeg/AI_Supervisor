@@ -66,14 +66,13 @@ async def payment_handler(call: types.CallbackQuery):
     await UserState.payment.set()
 
 
-@dp.callback_query_handler(text="*", state=UserState.payment)
-async def paid_handler(call: types.CallbackQuery):
-    await bot.send_message(call.message.chat.id, messages.PAYMENT_PROCESS, reply_markup=start_markup())
+@dp.message_handler(text="*", state=UserState.payment)
+async def paid_handler(message: types.Message):
+    await bot.send_message(message.chat.id, messages.PAYMENT_PROCESS, reply_markup=start_markup())
     await bot.send_message(
         ADMIN_ID,
-        messages.MESSAGE_SENT.format(call.message.chat.id, call.message.chat.username, call.message.text),
+        messages.MESSAGE_SENT.format(message.chat.id, message.chat.username, message.text),
     )
-    await UserState.payment.set()
 
 
 @dp.message_handler(commands=['help'], state="*")
