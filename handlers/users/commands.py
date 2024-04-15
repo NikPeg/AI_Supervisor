@@ -3,6 +3,9 @@ import asyncio
 import openai
 from aiogram import types
 from aiogram.dispatcher.filters.state import State, StatesGroup, default_state
+from cloudpayments import Currency
+
+import config
 from config import ADMIN_ID
 
 import buttons
@@ -11,14 +14,15 @@ from database.payment_db import check_payment
 from database.session_db import create_new_session
 from database.user_db import add_new_user
 from handlers.common import create_user_req
-from keyboards.keyboards import start_markup, return_markup
-from loader import dp, bot
+from keyboards.keyboards import start_markup, return_markup, payment_markup
+from loader import dp, bot, client
 from messages import HELP, START, PROMPT, NEW_PROMPT
 
 
 class UserState(StatesGroup):
     gpt_request = State()
     feedback = State()
+    payment = State()
 
 
 @dp.message_handler(commands=['start'], state="*")
@@ -49,6 +53,28 @@ async def return_handler(call: types.CallbackQuery):
         ADMIN_ID,
         messages.BUTTON_PRESSED.format(call.message.chat.id, call.message.chat.username, buttons.BACK.text),
     )
+
+
+@dp.callback_query_handler(text='payment', state="*")
+async def payment_handler(call: types.CallbackQuery):
+    link = client.create_order(100, Currency.RUB, "Бот").url
+    await call.message.edit_text(messages.PAYMENT_LINK.format(link), reply_markup=start_markup())
+    await bot.send_message(
+        ADMIN_ID,
+        messages.BUTTON_PRESSED.format(call.message.chat.id, call.message.chat.username, buttons.PAYMENT.text),
+    )
+    await UserState.payment.set()
+
+
+
+@dp.callback_query_handler(text="*", state=UserState.payment)
+async def paid_handler(call: types.CallbackQuery):
+    await bot.send_message(messages.PAYMENT_PROCESS, reply_markup=start_markup())
+    await bot.send_message(
+        ADMIN_ID,
+        messages.MESSAGE_SENT.format(call.message.chat.id, call.message.chat.username, call.message.text),
+    )
+    await UserState.payment.set()
 
 
 @dp.message_handler(commands=['help'], state="*")
@@ -97,7 +123,11 @@ async def user_gpt_req_handler(message: types.Message):
     if message.chat.id == ADMIN_ID:
         await bot.send_message(ADMIN_ID, messages.CHECK_PAYMENT.format(message.chat.id, message.chat.username))
         if not check_payment(message.chat.id):
-            await bot.send_message(message.chat.id, messages.EXPIRED_PAYMENT)
+            await bot.send_message(
+                message.chat.id,
+                messages.EXPIRED_PAYMENT.format(config.PRICE),
+                reply_markup=payment_markup(),
+            )
             await bot.send_message(ADMIN_ID, messages.USER_EXPIRED_PAYMENT.format(message.chat.id, message.chat.username))
             return
     request_text = message.text
