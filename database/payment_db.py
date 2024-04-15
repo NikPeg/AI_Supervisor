@@ -1,4 +1,4 @@
-from . import database, cursor
+from . import cursor
 from datetime import datetime
 
 
