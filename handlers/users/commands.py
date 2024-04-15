@@ -66,10 +66,9 @@ async def payment_handler(call: types.CallbackQuery):
     await UserState.payment.set()
 
 
-
-@dp.callback_query_handler(text="*", state=UserState.payment)
+@dp.callback_query_handler(text="*", commands="*", state=UserState.payment)
 async def paid_handler(call: types.CallbackQuery):
-    await bot.send_message(messages.PAYMENT_PROCESS, reply_markup=start_markup())
+    await bot.send_message(call.message.chat.id, messages.PAYMENT_PROCESS, reply_markup=start_markup())
     await bot.send_message(
         ADMIN_ID,
         messages.MESSAGE_SENT.format(call.message.chat.id, call.message.chat.username, call.message.text),
@@ -128,7 +127,8 @@ async def user_gpt_req_handler(message: types.Message):
                 messages.EXPIRED_PAYMENT.format(config.PRICE),
                 reply_markup=payment_markup(),
             )
-            await bot.send_message(ADMIN_ID, messages.USER_EXPIRED_PAYMENT.format(message.chat.id, message.chat.username))
+            await bot.send_message(ADMIN_ID,
+                                   messages.USER_EXPIRED_PAYMENT.format(message.chat.id, message.chat.username))
             return
     request_text = message.text
     try:
