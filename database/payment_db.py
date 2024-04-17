@@ -16,10 +16,10 @@ def check_subscribed(user_id):
 
 
 def subscribe(user_id):
-    cursor.execute("UPDATE User SET subscribed = 1 WHERE id = user_id;", (user_id,))
+    cursor.execute("UPDATE User SET subscribed = 1 WHERE id=?;", (user_id,))
     database.commit()
 
 
 def unsubscribe(user_id):
-    cursor.execute("UPDATE User SET subscribed = 0 WHERE id = user_id;", (user_id,))
+    cursor.execute("UPDATE User SET subscribed = 0 WHERE id=?;", (user_id,))
     database.commit()
