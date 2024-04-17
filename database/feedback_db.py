@@ -29,8 +29,8 @@ def get_all_feed_back_users():
     return all_users
 
 
-def get_all_users():
-    cursor.execute("SELECT id FROM User")
+def get_all_subscriptions():
+    cursor.execute("SELECT id, username, subscribed FROM User")
     all_users = cursor.fetchall()
     return all_users
 

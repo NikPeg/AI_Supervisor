@@ -7,7 +7,7 @@ import messages
 from config import ADMIN_ID
 
 import payments
-from database.feedback_db import add_new_feedback, get_all_users
+from database.feedback_db import add_new_feedback, get_all_subscriptions
 from database.feedback_db import delete_user_from_feedback, get_all_feed_back_users
 from database.payment_db import subscribe, unsubscribe
 from keyboards.keyboards import feedback_markup
@@ -53,23 +53,23 @@ async def start_feed_back():
 async def check_subscriptions():
     await bot.send_message(ADMIN_ID, text=messages.CHECK_SUBSCRIPTION)
     while True:
-        all_users = get_all_users()
-        for user in all_users:
+        all_users = get_all_subscriptions()
+        for user_id, username, subscribed in all_users:
             try:
-                for sub in client.list_subscriptions(user.id):
-                    if sub.status == payments.SubscriptionStatus.ACTIVE.value and not user.subscribed:
+                for sub in client.list_subscriptions(user_id):
+                    if sub.status == payments.SubscriptionStatus.ACTIVE.value and not subscribed:
                         await bot.send_message(
                             ADMIN_ID,
-                            messages.SUBSCRIPTION_ERROR.format(user.id, user.name),
+                            messages.SUBSCRIPTION_ERROR.format(user_id, username),
                         )
-                        subscribe(user.id)
+                        subscribe(user_id)
                         break
-                    if sub.status == payments.SubscriptionStatus.CANCELLED.value and user.subscribed:
+                    if sub.status == payments.SubscriptionStatus.CANCELLED.value and subscribed:
                         await bot.send_message(
                             ADMIN_ID,
-                            messages.SUBSCRIPTION_ENDED.format(user.id, user.name),
+                            messages.SUBSCRIPTION_ENDED.format(user_id, username),
                         )
-                        unsubscribe(user.id)
+                        unsubscribe(user_id)
                         break
             except Exception as e:
                 await bot.send_message(ADMIN_ID, text=e)
