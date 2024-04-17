@@ -39,6 +39,11 @@ async def unsubscribe_message_handler(message: types.Message):
     username = message.reply_to_message.text.split()[4][1:]
     await bot.send_message(ADMIN_ID, messages.UNSUBSCRIBING.format(user_id, username))
     for sub in client.list_subscriptions(user_id):
+        print(sub)
         if sub.status == SubscriptionStatus.ACTIVE:
-            client.cancel_subscription(sub.id)
+            print("cancelling")
+            try:
+                client.cancel_subscription(sub.id)
+            except Exception as e:
+                print(e)
             await bot.send_message(ADMIN_ID, messages.UNSUBSCRIBED.format(user_id, username))
