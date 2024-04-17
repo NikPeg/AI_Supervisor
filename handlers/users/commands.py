@@ -77,7 +77,7 @@ async def payment_handler(call: types.CallbackQuery):
 async def paid_handler(message: types.Message):
     for sub in client.list_subscriptions(message.chat.id):
         if sub.status == payments.SubscriptionStatus.ACTIVE.value:
-            UserState.gpt_request.set()
+            await UserState.gpt_request.set()
             subscribe(message.chat.id)
             await bot.send_message(message.chat.id, messages.PAYMENT_THANK, reply_markup=return_markup())
             await bot.send_message(
