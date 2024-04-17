@@ -79,7 +79,7 @@ async def paid_handler(message: types.Message):
         if sub.status == payments.SubscriptionStatus.ACTIVE.value:
             UserState.gpt_request.set()
             subscribe(message.chat.id)
-            await bot.send_message(message.chat.id, messages.PAYMENT_THANK.format(config.SOS_URL), reply_markup=return_markup())
+            await bot.send_message(message.chat.id, messages.PAYMENT_THANK, reply_markup=return_markup())
             await bot.send_message(
                 ADMIN_ID,
                 messages.USER_PAID.format(message.chat.id, message.chat.username),
