@@ -10,6 +10,7 @@ from config import ADMIN_ID
 
 import buttons
 import messages
+import payments
 from database.payment_db import check_payment
 from database.session_db import create_new_session
 from database.user_db import add_new_user
@@ -57,7 +58,13 @@ async def return_handler(call: types.CallbackQuery):
 
 @dp.callback_query_handler(text='payment', state="*")
 async def payment_handler(call: types.CallbackQuery):
-    link = client.create_order(config.PRICE, Currency.RUB, messages.PAYMENT_DESCRIPTION, account_id=call.message.chat.id).url
+    link = client.create_order(
+        config.PRICE,
+        Currency.RUB,
+        messages.PAYMENT_DESCRIPTION,
+        account_id=call.message.chat.id,
+        subscription_behavior=payments.SubscriptionBehavior.MONTHLY,
+    ).url
     await call.message.edit_text(messages.PAYMENT_LINK.format(link), reply_markup=return_markup())
     await bot.send_message(
         ADMIN_ID,
