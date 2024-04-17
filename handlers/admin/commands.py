@@ -31,6 +31,7 @@ async def answer_message_handler(message: types.Message):
 
 @dp.message_handler(commands=['unsubscribe'], state="*")
 async def unsubscribe_message_handler(message: types.Message):
+    print("unsubscribing")
     if message.chat.id != ADMIN_ID:
         return
     if not message.reply_to_message:
