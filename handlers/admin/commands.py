@@ -11,6 +11,7 @@ from loader import dp, bot
 
 @dp.message_handler(commands=['answer'], state="*")
 async def answer_message_handler(message: types.Message):
+    print("answering")
     if message.chat.id != ADMIN_ID:
         return
     if not message.reply_to_message:
