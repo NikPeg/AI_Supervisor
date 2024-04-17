@@ -10,7 +10,7 @@ def check_subscribed(user_id):
     cursor.execute("SELECT register FROM User WHERE id=?", (user_id,))
     register = datetime.datetime.strptime(cursor.fetchone()[0], DATE_FORMAT)
     print("Дата регистрации:", register)
-    if register + datetime.timedelta(days=2) <= datetime.datetime.now():
+    if register + datetime.timedelta(days=2) >= datetime.datetime.now():
         print("Действует пробный период", register)
         return True
     print("Проверяем подписку", register)
