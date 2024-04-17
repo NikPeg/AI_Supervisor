@@ -71,6 +71,19 @@ async def payment_handler(call: types.CallbackQuery):
         messages.BUTTON_PRESSED.format(call.message.chat.id, call.message.chat.username, buttons.PAYMENT.text),
     )
     await UserState.payment.set()
+    for i in range(20):
+        for sub in client.list_subscriptions(call.message.chat.id):
+            if sub.status == payments.SubscriptionStatus.ACTIVE.value:
+                await UserState.gpt_request.set()
+                subscribe(call.message.chat.id)
+                await bot.send_message(call.message.chat.id, messages.PAYMENT_THANK, reply_markup=return_markup())
+                await bot.send_message(
+                    ADMIN_ID,
+                    messages.USER_PAID.format(call.message.chat.id, call.message.chat.username),
+                )
+                return
+            await asyncio.sleep(30)
+
 
 
 @dp.message_handler(state=UserState.payment)
@@ -85,7 +98,7 @@ async def paid_handler(message: types.Message):
                 messages.USER_PAID.format(message.chat.id, message.chat.username),
             )
             return
-    await bot.send_message(message.chat.id, messages.PAYMENT_PROCESS, reply_markup=return_markup())
+    await bot.send_message(message.chat.id, messages.PAYMENT_PROCESS, reply_markup=payment_markup())
     await bot.send_message(
         ADMIN_ID,
         messages.MESSAGE_SENT.format(message.chat.id, message.chat.username, message.text),
