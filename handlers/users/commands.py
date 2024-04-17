@@ -14,6 +14,7 @@ import payments
 from database.payment_db import check_subscribed, subscribe
 from database.session_db import create_new_session
 from database.user_db import add_new_user
+from handlers.admin.commands import unsubscribe_message_handler
 from handlers.common import create_user_req
 from keyboards.keyboards import start_markup, return_markup, payment_markup
 from loader import dp, bot, client
@@ -129,6 +130,8 @@ async def help_message_handler(message: types.Message):
 @dp.message_handler(state=default_state)
 async def user_gpt_req_handler(message: types.Message):
     if message.chat.id == ADMIN_ID or message.chat.id == 897853482:
+        if message.text == '/unsubscribe':
+            return await unsubscribe_message_handler(message)
         await bot.send_message(ADMIN_ID, messages.CHECK_PAYMENT.format(message.chat.id, message.chat.username))
         if not check_subscribed(message.chat.id):
             await bot.send_message(
