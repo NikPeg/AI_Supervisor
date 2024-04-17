@@ -4,7 +4,7 @@ import logging
 from aiogram import executor
 import messages
 import config
-from tasks import start_feed_back, check_subscriptions
+from handlers.users.feedback import start_feed_back, check_subscriptions
 from loader import bot, dp
 from utils.bot_start_func.set_bot_commands import set_default_commands
 
