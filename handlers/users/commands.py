@@ -81,6 +81,9 @@ async def paid_handler(message: types.Message):
         messages.MESSAGE_SENT.format(message.chat.id, message.chat.username, message.text),
     )
     print("Подписки:", [s for s in client.list_subscriptions(message.chat.id)])
+    s = client.list_subscriptions(message.chat.id)[0]
+    print(s)
+    print(client.get_subscription(s.id))
 
 
 @dp.message_handler(commands=['help'], state="*")
