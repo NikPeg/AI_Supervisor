@@ -57,6 +57,9 @@ async def return_handler(call: types.CallbackQuery):
     )
 
 
+SUBSCRIPTION_CHECKS_COUNT = 300
+
+
 @dp.callback_query_handler(text='payment', state="*")
 async def payment_handler(call: types.CallbackQuery):
     link = client.create_order(
@@ -72,7 +75,7 @@ async def payment_handler(call: types.CallbackQuery):
         messages.BUTTON_PRESSED.format(call.message.chat.id, call.message.chat.username, buttons.PAYMENT.text),
     )
     await UserState.payment.set()
-    for i in range(20):
+    for i in range(SUBSCRIPTION_CHECKS_COUNT):
         for sub in client.list_subscriptions(call.message.chat.id):
             if sub.status == payments.SubscriptionStatus.ACTIVE.value:
                 await UserState.gpt_request.set()
@@ -83,7 +86,7 @@ async def payment_handler(call: types.CallbackQuery):
                     messages.USER_PAID.format(call.message.chat.id, call.message.chat.username),
                 )
                 return
-            await asyncio.sleep(30)
+            await asyncio.sleep(10)
 
 
 @dp.message_handler(state=UserState.payment)
