@@ -5,6 +5,7 @@ from aiogram import types
 from config import ADMIN_ID
 
 import messages
+from database.payment_db import unsubscribe
 from handlers.common import create_user_req
 from loader import dp, bot, client
 from payments import SubscriptionStatus
@@ -39,11 +40,10 @@ async def unsubscribe_message_handler(message: types.Message):
     username = message.reply_to_message.text.split()[4][1:]
     await bot.send_message(ADMIN_ID, messages.UNSUBSCRIBING.format(user_id, username))
     for sub in client.list_subscriptions(user_id):
-        print(sub)
         if sub.status == SubscriptionStatus.ACTIVE.value:
-            print("cancelling")
             try:
                 client.cancel_subscription(sub.id)
             except Exception as e:
-                print(e)
+                await bot.send_message(ADMIN_ID, e)
+            unsubscribe(user_id)
             await bot.send_message(ADMIN_ID, messages.UNSUBSCRIBED.format(user_id, username))
