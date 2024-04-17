@@ -9,6 +9,7 @@ from config import ADMIN_ID
 import payments
 from database.feedback_db import add_new_feedback, get_all_users
 from database.feedback_db import delete_user_from_feedback, get_all_feed_back_users
+from database.payment_db import subscribe, unsubscribe
 from keyboards.keyboards import feedback_markup
 from loader import bot, dp, client
 from .commands import UserState
@@ -61,12 +62,14 @@ async def check_subscriptions():
                             ADMIN_ID,
                             messages.SUBSCRIPTION_ERROR.format(user.id, user.name),
                         )
+                        subscribe(user.id)
                         break
                     if sub.status == payments.SubscriptionStatus.CANCELLED.value and user.subscribed:
                         await bot.send_message(
                             ADMIN_ID,
                             messages.SUBSCRIPTION_ENDED.format(user.id, user.name),
                         )
+                        unsubscribe(user.id)
                         break
             except Exception as e:
                 await bot.send_message(ADMIN_ID, text=e)

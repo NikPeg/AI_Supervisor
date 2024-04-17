@@ -11,7 +11,7 @@ from config import ADMIN_ID
 import buttons
 import messages
 import payments
-from database.payment_db import check_subscribed
+from database.payment_db import check_subscribed, subscribe
 from database.session_db import create_new_session
 from database.user_db import add_new_user
 from handlers.common import create_user_req
@@ -78,7 +78,8 @@ async def paid_handler(message: types.Message):
     for sub in client.list_subscriptions(message.chat.id):
         if sub.status == payments.SubscriptionStatus.ACTIVE.value:
             UserState.gpt_request.set()
-            await bot.send_message(message.chat.id, messages.PAYMENT_THANK, reply_markup=return_markup())
+            subscribe(message.chat.id)
+            await bot.send_message(message.chat.id, messages.PAYMENT_THANK.format(config.SOS_URL), reply_markup=return_markup())
             await bot.send_message(
                 ADMIN_ID,
                 messages.USER_PAID.format(message.chat.id, message.chat.username),

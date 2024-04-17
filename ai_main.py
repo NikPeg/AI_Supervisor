@@ -4,7 +4,7 @@ import logging
 from aiogram import executor
 import messages
 import config
-from handlers.users.feedback import start_feed_back
+from handlers.users.feedback import start_feed_back, check_subscriptions
 from loader import bot, dp
 from utils.bot_start_func.set_bot_commands import set_default_commands
 
@@ -15,6 +15,7 @@ async def on_startup(dispatcher):
     await bot.send_message(config.ADMIN_ID, messages.BOT_STARTED)
     await set_default_commands(dispatcher)
     asyncio.create_task(start_feed_back())
+    asyncio.create_task(check_subscriptions())
 
 
 if __name__ == '__main__':

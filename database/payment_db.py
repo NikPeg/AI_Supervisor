@@ -1,4 +1,4 @@
-from . import cursor
+from . import cursor, database
 import datetime
 
 
@@ -13,3 +13,13 @@ def check_subscribed(user_id):
     cursor.execute("SELECT subscribed FROM User WHERE id=?", (user_id,))
     subscribed = bool(cursor.fetchone()[0])
     return subscribed
+
+
+def subscribe(user_id):
+    cursor.execute("UPDATE User SET subscribed = 1 WHERE id = user_id;", (user_id,))
+    database.commit()
+
+
+def unsubscribe(user_id):
+    cursor.execute("UPDATE User SET subscribed = 0 WHERE id = user_id;", (user_id,))
+    database.commit()
