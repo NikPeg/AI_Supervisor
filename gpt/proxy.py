@@ -9,21 +9,6 @@ from openai import OpenAI, AsyncOpenAI
 import time
 
 
-class EventHandler(AssistantEventHandler):
-    def __init__(self, bot):
-        self.bot = bot
-
-    @override
-    def on_text_created(self, text) -> None:
-        self.bot.send_message(ADMIN_ID, f"\nassistant > ")
-        # print(f"\nassistant > ", end="", flush=True)
-
-    @override
-    def on_text_delta(self, delta, snapshot):
-        self.bot.send_message(ADMIN_ID, delta.value)
-        print(delta.value, end="", flush=True)
-
-
 class GPTProxy:
     def __init__(self, token, model="gpt-3.5-turbo", bot=None):
         self.client = openai.OpenAI(api_key=token)

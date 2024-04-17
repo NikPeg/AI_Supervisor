@@ -6,14 +6,10 @@ DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 def check_subscribed(user_id):
-    print("Проверяю подписку...")
     cursor.execute("SELECT register FROM User WHERE id=?", (user_id,))
     register = datetime.datetime.strptime(cursor.fetchone()[0], DATE_FORMAT)
-    print("Дата регистрации:", register)
     if register + datetime.timedelta(days=2) >= datetime.datetime.now():
-        print("Действует пробный период", register)
         return True
-    print("Проверяем подписку", register)
     cursor.execute("SELECT subscribed FROM User WHERE id=?", (user_id,))
     subscribed = bool(cursor.fetchone()[0])
     return subscribed
