@@ -75,15 +75,20 @@ async def payment_handler(call: types.CallbackQuery):
 
 @dp.message_handler(state=UserState.payment)
 async def paid_handler(message: types.Message):
+    for sub in client.list_subscriptions(message.chat.id):
+        if sub.status == payments.SubscriptionStatus.ACTIVE.value:
+            UserState.gpt_request.set()
+            await bot.send_message(message.chat.id, messages.PAYMENT_THANK, reply_markup=return_markup())
+            await bot.send_message(
+                ADMIN_ID,
+                messages.USER_PAID.format(message.chat.id, message.chat.username),
+            )
     await bot.send_message(message.chat.id, messages.PAYMENT_PROCESS, reply_markup=return_markup())
     await bot.send_message(
         ADMIN_ID,
         messages.MESSAGE_SENT.format(message.chat.id, message.chat.username, message.text),
     )
-    print("Подписки:")
-    for sub in client.list_subscriptions(message.chat.id):
-        print(sub)
-        print(client.get_subscription(sub.id))
+
 
 
 @dp.message_handler(commands=['help'], state="*")

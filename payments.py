@@ -7,6 +7,11 @@ class SubscriptionBehavior(enum.Enum):
     MONTHLY = "CreateMonthly"
 
 
+class SubscriptionStatus(enum.Enum):
+    ACTIVE = "Active"
+    CANCELLED = "Cancelled"
+
+
 class CloudPaymentsMixin(CloudPayments):
     def create_order(self, amount, currency, description, email=None,
                      send_email=None, require_confirmation=None,
