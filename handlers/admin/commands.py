@@ -29,7 +29,7 @@ async def answer_message_handler(message: types.Message):
         await bot.send_message(ADMIN_ID, messages.UNKNOWN_ERROR + e)
 
 
-@dp.message_handler(commands=['unsubscribe'], state="*")
+@dp.callback_query_handler(text='отписка', state="*")
 async def unsubscribe_message_handler(message: types.Message):
     print("unsubscribing")
     if message.chat.id != ADMIN_ID:

@@ -85,7 +85,6 @@ async def payment_handler(call: types.CallbackQuery):
             await asyncio.sleep(30)
 
 
-
 @dp.message_handler(state=UserState.payment)
 async def paid_handler(message: types.Message):
     for sub in client.list_subscriptions(message.chat.id):
