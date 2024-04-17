@@ -30,7 +30,7 @@ def get_all_feed_back_users():
 
 
 def get_all_subscriptions():
-    cursor.execute("SELECT id, username, subscribed FROM User")
+    cursor.execute("SELECT id, name, subscribed FROM User")
     all_users = cursor.fetchall()
     return all_users
 
