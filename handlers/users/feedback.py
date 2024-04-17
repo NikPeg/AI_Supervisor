@@ -5,10 +5,12 @@ from aiogram.dispatcher import FSMContext
 
 import messages
 from config import ADMIN_ID
-from database.feedback_db import add_new_feedback
+
+import payments
+from database.feedback_db import add_new_feedback, get_all_users
 from database.feedback_db import delete_user_from_feedback, get_all_feed_back_users
 from keyboards.keyboards import feedback_markup
-from loader import bot, dp
+from loader import bot, dp, client
 from .commands import UserState
 
 
@@ -41,6 +43,31 @@ async def start_feed_back():
                 await bot.send_message(user[0], text=messages.FEEDBACK_ASK, reply_markup=feedback_markup())
                 await bot.send_message(ADMIN_ID, text=messages.FEEDBACK_ASKED.format(user[0]))
                 delete_user_from_feedback(user[0])
+            except Exception as e:
+                await bot.send_message(ADMIN_ID, text=e)
+                continue
+        await asyncio.sleep(FEEDBACK_PERIOD)
+
+
+async def check_subscriptions():
+    await bot.send_message(ADMIN_ID, text=messages.CHECK_SUBSCRIPTION)
+    while True:
+        all_users = get_all_users()
+        for user in all_users:
+            try:
+                for sub in client.list_subscriptions(user.id):
+                    if sub.status == payments.SubscriptionStatus.ACTIVE.value and not user.subscribed:
+                        await bot.send_message(
+                            ADMIN_ID,
+                            messages.SUBSCRIPTION_ERROR.format(user.id, user.name),
+                        )
+                        break
+                    if sub.status == payments.SubscriptionStatus.CANCELLED.value and user.subscribed:
+                        await bot.send_message(
+                            ADMIN_ID,
+                            messages.SUBSCRIPTION_ENDED.format(user.id, user.name),
+                        )
+                        break
             except Exception as e:
                 await bot.send_message(ADMIN_ID, text=e)
                 continue

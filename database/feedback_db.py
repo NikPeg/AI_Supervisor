@@ -29,6 +29,12 @@ def get_all_feed_back_users():
     return all_users
 
 
+def get_all_users():
+    cursor.execute("SELECT id FROM User")
+    all_users = cursor.fetchall()
+    return all_users
+
+
 def add_new_feedback(user_id, user_text):
     date = datetime.datetime.now()
     cursor.execute("INSERT INTO Feedback VALUES(?,?,?)", (user_id, user_text, date,))

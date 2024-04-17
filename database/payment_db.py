@@ -1,13 +1,15 @@
 from . import cursor
-from datetime import datetime
+import datetime
 
 
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
-def check_payment(user_id):
-    cursor.execute("SELECT paid_by FROM User WHERE id=?", (user_id,))
-    paid_by = datetime.strptime(cursor.fetchone()[0], DATE_FORMAT)
-    if paid_by >= datetime.now():
+def check_subscribed(user_id):
+    cursor.execute("SELECT register FROM User WHERE id=?", (user_id,))
+    register = datetime.datetime.strptime(cursor.fetchone()[0], DATE_FORMAT)
+    if register <= datetime.datetime.now() + datetime.timedelta(days=2):
         return True
-    return False
+    cursor.execute("SELECT subscribed FROM User WHERE id=?", (user_id,))
+    subscribed = bool(cursor.fetchone()[0])
+    return subscribed

@@ -11,7 +11,7 @@ from config import ADMIN_ID
 import buttons
 import messages
 import payments
-from database.payment_db import check_payment
+from database.payment_db import check_subscribed
 from database.session_db import create_new_session
 from database.user_db import add_new_user
 from handlers.common import create_user_req
@@ -83,12 +83,12 @@ async def paid_handler(message: types.Message):
                 ADMIN_ID,
                 messages.USER_PAID.format(message.chat.id, message.chat.username),
             )
+            return
     await bot.send_message(message.chat.id, messages.PAYMENT_PROCESS, reply_markup=return_markup())
     await bot.send_message(
         ADMIN_ID,
         messages.MESSAGE_SENT.format(message.chat.id, message.chat.username, message.text),
     )
-
 
 
 @dp.message_handler(commands=['help'], state="*")
@@ -136,7 +136,7 @@ async def answer_message_handler(message: types.Message):
 async def user_gpt_req_handler(message: types.Message):
     if message.chat.id == ADMIN_ID:
         await bot.send_message(ADMIN_ID, messages.CHECK_PAYMENT.format(message.chat.id, message.chat.username))
-        if not check_payment(message.chat.id):
+        if not check_subscribed(message.chat.id):
             await bot.send_message(
                 message.chat.id,
                 messages.EXPIRED_PAYMENT.format(config.PRICE),
