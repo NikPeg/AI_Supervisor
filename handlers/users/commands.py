@@ -91,6 +91,9 @@ async def payment_handler(call: types.CallbackQuery):
 
 @dp.message_handler(state=UserState.payment)
 async def paid_handler(message: types.Message):
+    if message.chat.id == ADMIN_ID:
+        if message.text == '/unsubscribe':
+            return await unsubscribe_message_handler(message)
     for sub in client.list_subscriptions(message.chat.id):
         if sub.status == payments.SubscriptionStatus.ACTIVE.value:
             await UserState.gpt_request.set()
