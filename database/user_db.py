@@ -21,6 +21,6 @@ def check_user_status(user_id):
 
 
 def get_all_users():
-    cursor.execute("SELECT id, username FROM User WHERE date(register) <= '2024-04-27';")
+    cursor.execute("SELECT id, name FROM User WHERE date(register) <= '2024-04-27';")
     all_users = cursor.fetchall()
     return all_users
