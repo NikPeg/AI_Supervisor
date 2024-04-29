@@ -139,7 +139,6 @@ async def user_gpt_req_handler(message: types.Message):
         if message.text == '/unsubscribe':
             return await unsubscribe_message_handler(message)
 
-    await bot.send_message(ADMIN_ID, messages.CHECK_PAYMENT.format(message.chat.id, message.chat.username))
     if not check_subscribed(message.chat.id):
         await bot.send_message(
             message.chat.id,
