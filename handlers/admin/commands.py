@@ -30,6 +30,13 @@ async def answer_message_handler(message: types.Message):
         await bot.send_message(ADMIN_ID, messages.UNKNOWN_ERROR + e)
 
 
+@dp.message_handler(commands=['post'], state="*")
+async def post_message_handler(message: types.Message):
+    if message.chat.id != ADMIN_ID:
+        return
+    await bot.send_message(ADMIN_ID, messages.POST_MESSAGE)
+
+
 async def unsubscribe_message_handler(message: types.Message):
     if message.chat.id != ADMIN_ID:
         return
