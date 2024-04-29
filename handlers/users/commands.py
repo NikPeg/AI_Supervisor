@@ -156,4 +156,4 @@ async def user_gpt_req_handler(message: types.Message):
         await bot.send_message(message.chat.id, messages.WAIT)
         await bot.send_message(ADMIN_ID, messages.WAIT + e)
     except Exception as e:
-        await bot.send_message(ADMIN_ID, messages.UNKNOWN_ERROR + e)
+        await bot.send_message(ADMIN_ID, messages.UNKNOWN_ERROR.format(str(e)))

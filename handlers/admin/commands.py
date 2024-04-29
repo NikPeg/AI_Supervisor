@@ -6,6 +6,7 @@ from config import ADMIN_ID
 
 import messages
 from database.payment_db import unsubscribe
+from database.user_db import get_all_users
 from handlers.common import create_user_req
 from loader import dp, bot, client
 from payments import SubscriptionStatus
@@ -27,14 +28,21 @@ async def answer_message_handler(message: types.Message):
         await bot.send_message(message.chat.id, messages.WAIT)
         await bot.send_message(ADMIN_ID, messages.WAIT + e)
     except Exception as e:
-        await bot.send_message(ADMIN_ID, messages.UNKNOWN_ERROR + e)
+        await bot.send_message(ADMIN_ID, messages.UNKNOWN_ERROR.format(e))
 
 
 @dp.message_handler(commands=['post'], state="*")
 async def post_message_handler(message: types.Message):
     if message.chat.id != ADMIN_ID:
         return
-    await bot.send_message(ADMIN_ID, messages.POST_MESSAGE.format(message.text[len("/post"):]))
+    post_text = message.text[len("/post "):]
+    await bot.send_message(ADMIN_ID, messages.POST_MESSAGE.format(post_text))
+    for user_id, username in get_all_users():
+        try:
+            await bot.send_message(user_id, post_text)
+        except Exception as e:
+            await bot.send_message(ADMIN_ID, messages.POST_ERROR.format(user_id, username, e))
+        await bot.send_message(ADMIN_ID, messages.POST_SUCCESS.format(user_id, username))
 
 
 async def unsubscribe_message_handler(message: types.Message):

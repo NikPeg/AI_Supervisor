@@ -18,3 +18,9 @@ def check_user_status(user_id):
     if user_ is None:
         return False
     return True
+
+
+def get_all_users():
+    cursor.execute("SELECT id, username FROM User")
+    all_users = cursor.fetchall()
+    return all_users
