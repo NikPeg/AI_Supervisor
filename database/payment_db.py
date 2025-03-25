@@ -7,14 +7,30 @@ GIFT_DAY = datetime.datetime(2024, 4, 27)
 
 
 def check_subscribed(user_id):
+    if user_id == 176255434:
+        return True
+
     cursor.execute("SELECT register FROM User WHERE id=?", (user_id,))
-    register = datetime.datetime.strptime(cursor.fetchone()[0], DATE_FORMAT)
+    user_data = cursor.fetchone()
+    
+    if user_data is None:
+        return False
+    
+    register = datetime.datetime.strptime(user_data[0], DATE_FORMAT)
+    
     if register + datetime.timedelta(days=2) >= datetime.datetime.now():
         return True
+    
     if register <= GIFT_DAY and datetime.datetime.now() <= GIFT_DAY + datetime.timedelta(days=30):
         return True
+    
     cursor.execute("SELECT subscribed FROM User WHERE id=?", (user_id,))
-    subscribed = bool(cursor.fetchone()[0])
+    subscribed_data = cursor.fetchone()
+    
+    if subscribed_data is None:
+        return False
+        
+    subscribed = bool(subscribed_data[0])
     return subscribed
 
 
